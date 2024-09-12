@@ -24,6 +24,9 @@ export default function App() {
           setText(changedText);
         }}
       />
+      <Text>
+        {text}
+      </Text>
     </View>
   );
 }
