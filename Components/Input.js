@@ -12,7 +12,7 @@ export default function Input({ autoFocus }) {
       inputRef.current.focus();
     }
   }, [autoFocus]);
-  
+
   return (
     <View>
       <TextInput
@@ -25,6 +25,11 @@ export default function Input({ autoFocus }) {
           setText(changedText);
         }}
       />
+      {text.length > 0 && (
+        <Text style={{ color: 'gray', marginTop: 5 }}>
+          Character count: {text.length}
+        </Text>
+      )}
     </View>
   );
 }
