@@ -2,9 +2,10 @@ import { StyleSheet, Text, View, TextInput } from "react-native";
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 
-
 export default function Input({ autoFocus }) {
   const [text, setText] = useState("");
+  const [message, setMessage] = useState("");
+  const [showCount, setShowCount] = useState(false);
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -12,6 +13,15 @@ export default function Input({ autoFocus }) {
       inputRef.current.focus();
     }
   }, [autoFocus]);
+
+  const handleBlur = () => {
+    if (text.length >= 3) {
+      setMessage("Thank you");
+    } else {
+      setMessage("Please type more than 3 characters");
+    }
+    setShowCount(false);
+  };
 
   return (
     <View>
@@ -26,7 +36,7 @@ export default function Input({ autoFocus }) {
         }}
       />
       {text.length > 0 && (
-        <Text style={{ color: 'gray', marginTop: 5 }}>
+        <Text style={{ color: "gray", marginTop: 5 }}>
           Character count: {text.length}
         </Text>
       )}
