@@ -33,12 +33,18 @@ export default function Input({ autoFocus }) {
         value={text}
         onChangeText={function (changedText) {
           setText(changedText);
+          setShowCount(changedText.length > 0);
+          setMessage("");
         }}
+        onBlur={handleBlur}
       />
-      {text.length > 0 && (
+      {showCount && (
         <Text style={{ color: "gray", marginTop: 5 }}>
           Character count: {text.length}
         </Text>
+      )}
+      {message && (
+        <Text style={{ color: "gray", marginTop: 5 }}>{message}</Text>
       )}
     </View>
   );
