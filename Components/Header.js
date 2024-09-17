@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   text: {
     color: "darkmagenta",
     fontSize: 25,
-    bordercolor: "darkmagenta",
+    borderColor: "darkmagenta",
     borderWidth: 2,
     padding: 5,
     marginBotton: 10,
