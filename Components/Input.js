@@ -31,11 +31,11 @@ export default function Input({ autoFocus, inputHandler, modalVisible }) {
   return (
     <Modal visible={modalVisible} animationType='slide' >
       <View style={styles.container}>
-        <TextInput
+        <TextInput  style={styles.input}
           ref={inputRef}
           placeholder="Type something"
           keyboardType="default"
-          style={{ borderBottonColor: "purple", borderBottomWidth: 2 }}
+          
           value={text}
           onChangeText={function (changedText) {
             setText(changedText);
@@ -66,4 +66,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  input: {borderColor: "purple", borderWidth: 2, padding: 5},
 });
