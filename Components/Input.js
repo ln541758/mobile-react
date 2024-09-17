@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput } from "react-native";
+import { StyleSheet, Text, View, TextInput, Button } from "react-native";
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 
@@ -13,6 +13,12 @@ export default function Input({ autoFocus }) {
       inputRef.current.focus();
     }
   }, [autoFocus]);
+
+  function handleConfirm(userText) {
+    console.log(text);
+  }
+
+
 
   const handleBlur = () => {
     if (text.length >= 3) {
@@ -46,6 +52,12 @@ export default function Input({ autoFocus }) {
       {message && (
         <Text style={{ color: "gray", marginTop: 5 }}>{message}</Text>
       )}
+
+      <Button
+        onPress={handleConfirm}
+        title="Confirm"
+      />
+
     </View>
   );
 }
