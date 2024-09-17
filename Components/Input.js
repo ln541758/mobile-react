@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TextInput, Button, Modal } from "react-native";
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 
-export default function Input({ autoFocus, inputHandler }) {
+export default function Input({ autoFocus, inputHandler, modalVisible }) {
   const [text, setText] = useState("");
   const [message, setMessage] = useState("");
   const [showCount, setShowCount] = useState(false);
@@ -29,7 +29,7 @@ export default function Input({ autoFocus, inputHandler }) {
   };
 
   return (
-    <Modal visible={true} animationType='slide' >
+    <Modal visible={modalVisible} animationType='slide' >
       <View style={styles.container}>
         <TextInput
           ref={inputRef}
