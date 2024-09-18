@@ -6,6 +6,7 @@ import {
   Button,
   Modal,
   Alert,
+  Image,
 } from "react-native";
 import React from "react";
 import { useState, useEffect, useRef } from "react";
@@ -31,6 +32,8 @@ export default function Input({
   useEffect(() => {
     if (text.length >= 3) {
       setConfirmed(true);
+    } else {
+      setConfirmed(false);
     }
   });
 
@@ -67,35 +70,49 @@ export default function Input({
 
   return (
     <Modal visible={modalVisible} animationType="slide">
-      <View style={styles.container}>
-        <TextInput
-          style={styles.input}
-          ref={inputRef}
-          placeholder="Type something"
-          keyboardType="default"
-          value={text}
-          onChangeText={function (changedText) {
-            setText(changedText);
-            setShowCount(changedText.length > 0);
-            setMessage("");
-          }}
-          onBlur={handleBlur}
-        />
-        {showCount && (
-          <Text style={{ color: "gray", marginTop: 5 }}>
-            Character count: {text.length}
-          </Text>
-        )}
-        {message && (
-          <Text style={{ color: "gray", marginTop: 5 }}>{message}</Text>
-        )}
-        <View style={styles.button}>
-          <Button onPress={handleCancel} title="Cancel" />
-          <Button
-            onPress={handleConfirm}
-            disabled={!confirmed}
-            title="Confirm"
+      <View style={styles.modalContainer}>
+        <View style={styles.modalContent}>
+          <Image
+            style={styles.image}
+            source={require("../assets/lab2.png")}
+            alt={"Arrow Target icon"}
           />
+          <Image
+            style={styles.image}
+            source={{
+              uri: "https://cdn-icons-png.flaticon.com/512/2617/2617812.png",
+            }}
+            alt={"Arrow Target icon"}
+          />
+          <TextInput
+            style={styles.input}
+            ref={inputRef}
+            placeholder="Type something"
+            keyboardType="default"
+            value={text}
+            onChangeText={function (changedText) {
+              setText(changedText);
+              setShowCount(changedText.length > 0);
+              setMessage("");
+            }}
+            onBlur={handleBlur}
+          />
+          {showCount && (
+            <Text style={{ color: "gray", marginTop: 5 }}>
+              Character count: {text.length}
+            </Text>
+          )}
+          {message && (
+            <Text style={{ color: "gray", marginTop: 5 }}>{message}</Text>
+          )}
+          <View style={styles.button}>
+            <Button onPress={handleCancel} title="Cancel" />
+            <Button
+              onPress={handleConfirm}
+              disabled={!confirmed}
+              title="Confirm"
+            />
+          </View>
         </View>
       </View>
     </Modal>
@@ -103,9 +120,9 @@ export default function Input({
 }
 
 const styles = StyleSheet.create({
-  container: {
+  modalContainer: {
     flex: 1,
-    backgroundColor: "red",
+    backgroundColor: "#d8bfd8",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -113,6 +130,20 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: "40%",
+    width: "80%",
+  },
+  modalContent: {
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    height: "40%",
+    width: "60%",
+    borderRadius: 20,
+    padding: 10,
+  },
+  image: {
+    width: 100,
+    height: 100,
+    marginBottom: 10,
   },
 });

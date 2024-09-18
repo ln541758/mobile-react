@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   },
   bottomView: {
     flex: 4,
-    backgroundColor: "#dda0dd",
+    backgroundColor: "#d8bfd8",
     alignItems: "center"
   },
 });
