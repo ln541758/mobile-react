@@ -52,7 +52,7 @@ export default function Input({
         text: "OK",
         onPress: () => {
           cancelHandler();
-          setText("");
+          setText('');
         },
       },
     ]);
