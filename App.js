@@ -18,6 +18,10 @@ export default function App() {
   function isModalVisible() {
     setModalVisible(true);
   }
+
+  function handleCancelInput() {
+    setModalVisible(false);
+  }
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topView}>
@@ -31,6 +35,7 @@ export default function App() {
           autoFocus={true}
           inputHandler={handleInputData}
           modalVisible={modalVisible}
+          cancelHandler={handleCancelInput}
         />
       </View>
       <View style={styles.bottomView}>
@@ -58,6 +63,6 @@ const styles = StyleSheet.create({
   bottomView: {
     flex: 4,
     backgroundColor: "#dda0dd",
-    alignItems: "center",
+    alignItems: "center"
   },
 });

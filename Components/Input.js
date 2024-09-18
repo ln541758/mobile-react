@@ -1,8 +1,21 @@
-import { StyleSheet, Text, View, TextInput, Button, Modal } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+  Modal,
+  Alert,
+} from "react-native";
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 
-export default function Input({ autoFocus, inputHandler, modalVisible }) {
+export default function Input({
+  autoFocus,
+  inputHandler,
+  modalVisible,
+  cancelHandler,
+}) {
   const [text, setText] = useState("");
   const [message, setMessage] = useState("");
   const [showCount, setShowCount] = useState(false);
@@ -28,6 +41,23 @@ export default function Input({ autoFocus, inputHandler, modalVisible }) {
     setShowCount(false);
   };
 
+  function handleCancel() {
+    Alert.alert("isCancel", "Do you want to cancel?", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      {
+        text: "OK",
+        onPress: () => {
+          cancelHandler();
+          setText("");
+        },
+      },
+    ]);
+  }
+
   return (
     <Modal visible={modalVisible} animationType="slide">
       <View style={styles.container}>
@@ -52,7 +82,7 @@ export default function Input({ autoFocus, inputHandler, modalVisible }) {
         {message && (
           <Text style={{ color: "gray", marginTop: 5 }}>{message}</Text>
         )}
-
+        <Button onPress={handleCancel} title="Cancel" />
         <Button onPress={handleConfirm} title="Confirm" />
       </View>
     </Modal>
