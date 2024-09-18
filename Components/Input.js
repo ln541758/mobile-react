@@ -82,8 +82,10 @@ export default function Input({
         {message && (
           <Text style={{ color: "gray", marginTop: 5 }}>{message}</Text>
         )}
-        <Button onPress={handleCancel} title="Cancel" />
-        <Button onPress={handleConfirm} title="Confirm" />
+        <View style={styles.button}>
+          <Button onPress={handleCancel} title="Cancel" />
+          <Button onPress={handleConfirm} title="Confirm" />
+        </View>
       </View>
     </Modal>
   );
@@ -97,4 +99,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   input: { borderColor: "purple", borderWidth: 2, padding: 5 },
+  button: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "40%",
+  },
 });
