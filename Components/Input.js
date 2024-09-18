@@ -19,6 +19,7 @@ export default function Input({
   const [text, setText] = useState("");
   const [message, setMessage] = useState("");
   const [showCount, setShowCount] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -26,6 +27,12 @@ export default function Input({
       inputRef.current.focus();
     }
   }, [autoFocus]);
+
+  useEffect(() => {
+    if (text.length >= 3) {
+      setConfirmed(true);
+    }
+  });
 
   function handleConfirm() {
     // console.log(userText);
@@ -52,7 +59,7 @@ export default function Input({
         text: "OK",
         onPress: () => {
           cancelHandler();
-          setText('');
+          setText("");
         },
       },
     ]);
@@ -84,7 +91,11 @@ export default function Input({
         )}
         <View style={styles.button}>
           <Button onPress={handleCancel} title="Cancel" />
-          <Button onPress={handleConfirm} title="Confirm" />
+          <Button
+            onPress={handleConfirm}
+            disabled={!confirmed}
+            title="Confirm"
+          />
         </View>
       </View>
     </Modal>
