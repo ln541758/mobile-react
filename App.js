@@ -13,7 +13,7 @@ export default function App() {
         <Text>child 1</Text>
         <Text>child 2</Text>
       </Header>
-      <Input />
+      <Input autoFocus={true}/>
       {/* <Text>{text}</Text> */}
     </View>
   );
