@@ -40,6 +40,7 @@ export default function Input({
   function handleConfirm() {
     // console.log(text);
     inputHandler(text);
+    setMessage("");
   }
 
   const handleBlur = () => {
@@ -55,7 +56,7 @@ export default function Input({
     Alert.alert("isCancel", "Do you want to cancel?", [
       {
         text: "Cancel",
-        onPress: () => console.log("Cancel Pressed"),
+        onPress: () => {console.log("Cancel Pressed")},
         style: "cancel",
       },
       {
@@ -93,7 +94,6 @@ export default function Input({
             onChangeText={function (changedText) {
               setText(changedText);
               setShowCount(changedText.length > 0);
-              setMessage("");
             }}
             onBlur={handleBlur}
           />
