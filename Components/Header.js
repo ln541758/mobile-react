@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Header({ name, children }) {
   return (
-    <View >
+    <View>
       <Text style={styles.text}>Welcome to {name}!</Text>
       {children}
     </View>
