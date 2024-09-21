@@ -1,11 +1,26 @@
-import { StyleSheet, Text, View, TextInput, Button, Modal } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+  Modal,
+  Alert,
+  Image,
+} from "react-native";
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 
-export default function Input({ autoFocus, inputHandler, modalVisible }) {
+export default function Input({
+  autoFocus,
+  inputHandler,
+  modalVisible,
+  cancelHandler,
+}) {
   const [text, setText] = useState("");
   const [message, setMessage] = useState("");
   const [showCount, setShowCount] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -13,6 +28,14 @@ export default function Input({ autoFocus, inputHandler, modalVisible }) {
       inputRef.current.focus();
     }
   }, [autoFocus]);
+
+  useEffect(() => {
+    if (text.length >= 3) {
+      setConfirmed(true);
+    } else {
+      setConfirmed(false);
+    }
+  });
 
   function handleConfirm() {
     // console.log(userText);
@@ -28,43 +51,99 @@ export default function Input({ autoFocus, inputHandler, modalVisible }) {
     setShowCount(false);
   };
 
+  function handleCancel() {
+    Alert.alert("isCancel", "Do you want to cancel?", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      {
+        text: "OK",
+        onPress: () => {
+          cancelHandler();
+          setText("");
+        },
+      },
+    ]);
+  }
+
   return (
     <Modal visible={modalVisible} animationType="slide">
-      <View style={styles.container}>
-        <TextInput
-          style={styles.input}
-          ref={inputRef}
-          placeholder="Type something"
-          keyboardType="default"
-          value={text}
-          onChangeText={function (changedText) {
-            setText(changedText);
-            setShowCount(changedText.length > 0);
-            setMessage("");
-          }}
-          onBlur={handleBlur}
-        />
-        {showCount && (
-          <Text style={{ color: "gray", marginTop: 5 }}>
-            Character count: {text.length}
-          </Text>
-        )}
-        {message && (
-          <Text style={{ color: "gray", marginTop: 5 }}>{message}</Text>
-        )}
-
-        <Button onPress={handleConfirm} title="Confirm" />
+      <View style={styles.modalContainer}>
+        <View style={styles.modalContent}>
+          <Image
+            style={styles.image}
+            source={require("../assets/lab2.png")}
+            alt={"Arrow Target icon"}
+          />
+          <Image
+            style={styles.image}
+            source={{
+              uri: "https://cdn-icons-png.flaticon.com/512/2617/2617812.png",
+            }}
+            alt={"Arrow Target icon"}
+          />
+          <TextInput
+            style={styles.input}
+            ref={inputRef}
+            placeholder="Type something"
+            keyboardType="default"
+            value={text}
+            onChangeText={function (changedText) {
+              setText(changedText);
+              setShowCount(changedText.length > 0);
+              setMessage("");
+            }}
+            onBlur={handleBlur}
+          />
+          {showCount && (
+            <Text style={{ color: "gray", marginTop: 5 }}>
+              Character count: {text.length}
+            </Text>
+          )}
+          {message && (
+            <Text style={{ color: "gray", marginTop: 5 }}>{message}</Text>
+          )}
+          <View style={styles.button}>
+            <Button onPress={handleCancel} title="Cancel" />
+            <Button
+              onPress={handleConfirm}
+              disabled={!confirmed}
+              title="Confirm"
+            />
+          </View>
+        </View>
       </View>
     </Modal>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  modalContainer: {
     flex: 1,
-    backgroundColor: "red",
+    backgroundColor: "#d8bfd8",
     alignItems: "center",
     justifyContent: "center",
   },
   input: { borderColor: "purple", borderWidth: 2, padding: 5 },
+  button: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "80%",
+  },
+  modalContent: {
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    height: "40%",
+    width: "60%",
+    borderRadius: 20,
+    padding: 10,
+  },
+  image: {
+    width: 100,
+    height: 100,
+    marginBottom: 10,
+  },
 });
