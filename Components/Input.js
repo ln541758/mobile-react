@@ -38,7 +38,7 @@ export default function Input({
   });
 
   function handleConfirm() {
-    // console.log(userText);
+    // console.log(text);
     inputHandler(text);
   }
 
@@ -129,13 +129,13 @@ const styles = StyleSheet.create({
   input: { borderColor: "purple", borderWidth: 2, padding: 5 },
   button: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     width: "80%",
   },
   modalContent: {
     backgroundColor: "white",
     alignItems: "center",
-    justifyContent: "space-evenly",
+    justifyContent: "center",
     height: "40%",
     width: "60%",
     borderRadius: 20,
