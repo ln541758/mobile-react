@@ -38,6 +38,19 @@ export default function App() {
   function handleCancelInput() {
     setModalVisible(false);
   }
+
+  function handleDelete(deletedId) {
+    // console.log("App.js knows goal is deleted");
+    // const newGoals = goals.filter((goalObj) => {
+    //   return goalObj.id !== deletedId;
+    // });
+    setGoals((prevGoals) => {
+      return prevGoals.filter((goalObj) => {
+        return goalObj.id !== deletedId;
+      });
+    });
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topView}>
@@ -60,7 +73,7 @@ export default function App() {
           data={goals}
           renderItem={({ item }) => {
             // console.log({item});
-            return <GoalItem goalObj={item} />;
+            return <GoalItem goalObj={item} deleteHandler={handleDelete} />;
           }}
         />
 
