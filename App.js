@@ -56,12 +56,12 @@ export default function App() {
       <View style={styles.bottomView}>
         <FlatList contentContainerStyle={styles.scrollViewContainer}
           data={goals}
-          renderItem={(receivedObj) => {
-            console.log(receivedObj.item);
+          renderItem={({item}) => {
+            // console.log({item});
             return (
               <View style={styles.textContainer}>
-                <Text style={styles.text} key={receivedObj.item.id}>
-                  {receivedObj.item.text}
+                <Text style={styles.text} key={item.id}>
+                  {item.text}
                 </Text>
               </View>
             );
