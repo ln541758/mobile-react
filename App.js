@@ -4,20 +4,19 @@ import Header from "./Components/Header";
 import Input from "./Components/Input";
 import { useState } from "react";
 
-
 export default function App() {
   const [receivedData, setReceivedData] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
-  const [goals, setGoals] = useState();
-  
-  
+  const [goals, setGoals] = useState([]);
+
   const appName = "My awesome app";
   function handleInputData(data) {
     console.log("App.js ", data);
-    
+
     let newGoal = { text: data, id: Math.random() };
-    const newGoals = {...goals, newGoal};
-    setGoals(newGoals);
+    setGoals((prevGoals) => {
+      return [...prevGoals, newGoal];
+    });
 
     setReceivedData(data);
     setModalVisible(false);
@@ -47,9 +46,16 @@ export default function App() {
         />
       </View>
       <View style={styles.bottomView}>
-        <View style={styles.textContainer}>
-          {/* <Text style={styles.text}>{receivedData}</Text> */}
-        </View>
+        {/* <Text style={styles.text}>{receivedData}</Text> */}
+        {goals.map((goalObj) => {
+          return (
+            <View style={styles.textContainer}>
+              <Text style={styles.text} key={goalObj.id}>
+                {goalObj.text}
+              </Text>
+            </View>
+          );
+        })}
       </View>
     </SafeAreaView>
   );
@@ -65,12 +71,12 @@ const styles = StyleSheet.create({
   textContainer: {
     backgroundColor: "darkgray",
     padding: 10,
-    margin: 15,
+    margin: 5,
     fontSize: 20,
     borderRadius: 5,
   },
   text: {
-    color: "blue",
+    color: "purple",
   },
   topView: {
     flex: 1,
