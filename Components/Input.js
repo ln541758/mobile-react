@@ -70,8 +70,9 @@ export default function Input({
   }
 
   return (
-    <Modal visible={modalVisible} animationType="slide">
+    <Modal visible={modalVisible} animationType="slide" transparent={true}>
       <View style={styles.modalContainer}>
+        <View style={styles.modalCard}>
         <View style={styles.modalContent}>
           <Image
             style={styles.image}
@@ -114,6 +115,7 @@ export default function Input({
             />
           </View>
         </View>
+        </View>
       </View>
     </Modal>
   );
@@ -122,7 +124,7 @@ export default function Input({
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    backgroundColor: "#d8bfd8",
+    // backgroundColor: "#d8bfd8",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -131,6 +133,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     width: "80%",
+  },
+  modalCard: {
+    borderRadius: 6,
+    backgroundColor: "#999",
+    alignItems: "center",
   },
   modalContent: {
     backgroundColor: "white",
