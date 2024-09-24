@@ -6,6 +6,7 @@ import {
   Button,
   SafeAreaView,
   ScrollView,
+  FlatList,
 } from "react-native";
 import Header from "./Components/Header";
 import Input from "./Components/Input";
@@ -53,8 +54,22 @@ export default function App() {
         />
       </View>
       <View style={styles.bottomView}>
-        <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-          {/* <Text style={styles.text}>{receivedData}</Text> */}
+        <FlatList contentContainerStyle={styles.scrollViewContainer}
+          data={goals}
+          renderItem={(receivedObj) => {
+            console.log(receivedObj.item);
+            return (
+              <View style={styles.textContainer}>
+                <Text style={styles.text} key={receivedObj.item.id}>
+                  {receivedObj.item.text}
+                </Text>
+              </View>
+            );
+          }}
+        />
+
+        {/* <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+          <Text style={styles.text}>{receivedData}</Text> 
           {goals.map((goalObj) => {
             return (
               <View style={styles.textContainer}>
@@ -64,7 +79,7 @@ export default function App() {
               </View>
             );
           })}
-        </ScrollView>
+        </ScrollView>*/}
       </View>
     </SafeAreaView>
   );
