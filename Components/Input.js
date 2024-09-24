@@ -56,7 +56,9 @@ export default function Input({
     Alert.alert("isCancel", "Do you want to cancel?", [
       {
         text: "Cancel",
-        onPress: () => {console.log("Cancel Pressed")},
+        onPress: () => {
+          console.log("Cancel Pressed");
+        },
         style: "cancel",
       },
       {
@@ -72,7 +74,6 @@ export default function Input({
   return (
     <Modal visible={modalVisible} animationType="slide" transparent={true}>
       <View style={styles.modalContainer}>
-        <View style={styles.modalCard}>
         <View style={styles.modalContent}>
           <Image
             style={styles.image}
@@ -115,7 +116,6 @@ export default function Input({
             />
           </View>
         </View>
-        </View>
       </View>
     </Modal>
   );
@@ -128,25 +128,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  input: { borderColor: "purple", borderWidth: 2, padding: 5 },
+  input: { borderColor: "purple", borderWidth: 2, padding: 5, color: "purple" },
   button: {
     flexDirection: "row",
     justifyContent: "center",
     width: "80%",
   },
-  modalCard: {
-    borderRadius: 6,
-    backgroundColor: "#999",
-    alignItems: "center",
-  },
   modalContent: {
-    backgroundColor: "white",
+    backgroundColor: "darkgray",
     alignItems: "center",
     justifyContent: "center",
     height: "40%",
     width: "60%",
     borderRadius: 20,
     padding: 10,
+    marginTop: 50,
   },
   image: {
     width: 100,

@@ -7,10 +7,12 @@ import { useState } from "react";
 export default function App() {
   const [receivedData, setReceivedData] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
+  const [goals, setGoals] = useState("");
 
   const appName = "My awesome app";
   function handleInputData(data) {
     console.log("App.js ", data);
+
     setReceivedData(data);
     setModalVisible(false);
   }
@@ -39,8 +41,8 @@ export default function App() {
         />
       </View>
       <View style={styles.bottomView}>
-        <View style={styles.text}>
-          <Text>{receivedData}</Text>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>{receivedData}</Text>
         </View>
       </View>
     </SafeAreaView>
@@ -54,12 +56,15 @@ const styles = StyleSheet.create({
     // alignItems: "center",
     justifyContent: "center",
   },
-  text: {
+  textContainer: {
     backgroundColor: "darkgray",
     padding: 10,
-    borderRadius: 5,
-    color: "darkslateblue",
     margin: 15,
+    fontSize: 20,
+    borderRadius: 5,
+  },
+  text: {
+    color: "blue",
   },
   topView: {
     flex: 1,
