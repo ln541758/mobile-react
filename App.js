@@ -4,14 +4,20 @@ import Header from "./Components/Header";
 import Input from "./Components/Input";
 import { useState } from "react";
 
+
 export default function App() {
   const [receivedData, setReceivedData] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
-  const [goals, setGoals] = useState("");
-
+  const [goals, setGoals] = useState();
+  
+  
   const appName = "My awesome app";
   function handleInputData(data) {
     console.log("App.js ", data);
+    
+    let newGoal = { text: data, id: Math.random() };
+    const newGoals = {...goals, newGoal};
+    setGoals(newGoals);
 
     setReceivedData(data);
     setModalVisible(false);
@@ -42,7 +48,7 @@ export default function App() {
       </View>
       <View style={styles.bottomView}>
         <View style={styles.textContainer}>
-          <Text style={styles.text}>{receivedData}</Text>
+          {/* <Text style={styles.text}>{receivedData}</Text> */}
         </View>
       </View>
     </SafeAreaView>
