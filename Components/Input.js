@@ -38,8 +38,9 @@ export default function Input({
   });
 
   function handleConfirm() {
-    // console.log(userText);
+    // console.log(text);
     inputHandler(text);
+    setMessage("");
   }
 
   const handleBlur = () => {
@@ -55,7 +56,9 @@ export default function Input({
     Alert.alert("isCancel", "Do you want to cancel?", [
       {
         text: "Cancel",
-        onPress: () => console.log("Cancel Pressed"),
+        onPress: () => {
+          console.log("Cancel Pressed");
+        },
         style: "cancel",
       },
       {
@@ -69,7 +72,7 @@ export default function Input({
   }
 
   return (
-    <Modal visible={modalVisible} animationType="slide">
+    <Modal visible={modalVisible} animationType="slide" transparent={true}>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <Image
@@ -93,7 +96,6 @@ export default function Input({
             onChangeText={function (changedText) {
               setText(changedText);
               setShowCount(changedText.length > 0);
-              setMessage("");
             }}
             onBlur={handleBlur}
           />
@@ -122,24 +124,25 @@ export default function Input({
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    backgroundColor: "#d8bfd8",
+    // backgroundColor: "#d8bfd8",
     alignItems: "center",
     justifyContent: "center",
   },
-  input: { borderColor: "purple", borderWidth: 2, padding: 5 },
+  input: { borderColor: "purple", borderWidth: 2, padding: 5, color: "purple" },
   button: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     width: "80%",
   },
   modalContent: {
-    backgroundColor: "white",
+    backgroundColor: "darkgray",
     alignItems: "center",
-    justifyContent: "space-evenly",
+    justifyContent: "center",
     height: "40%",
     width: "60%",
     borderRadius: 20,
     padding: 10,
+    marginTop: 50,
   },
   image: {
     width: 100,
