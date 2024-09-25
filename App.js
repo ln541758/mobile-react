@@ -70,8 +70,14 @@ export default function App() {
       <View style={styles.bottomView}>
         <FlatList
           contentContainerStyle={styles.scrollViewContainer}
-          ListEmptyComponent={<Text style={styles.text}>No goals to show</Text>}
-
+          // ListEmptyComponent={<Text style={styles.text}>No goals to show</Text>}
+          ListHeaderComponent={() =>
+            goals.length > 0 ? (
+              <Text style={styles.text}>My goals</Text>
+            ) : (
+              <Text style={styles.text}>No goals to show</Text>
+            )
+          }
           data={goals}
           renderItem={({ item }) => {
             // console.log({item});
