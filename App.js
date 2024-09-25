@@ -69,6 +69,10 @@ export default function App() {
     ]);
   }
 
+  function renderSeparator() {
+    return <View style={styles.seperators} />;
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topView}>
@@ -89,6 +93,7 @@ export default function App() {
         <FlatList
           contentContainerStyle={styles.scrollViewContainer}
           // ListEmptyComponent={<Text style={styles.text}>No goals to show</Text>}
+          ItemSeparatorComponent={renderSeparator}
           ListHeaderComponent={() =>
             goals.length > 0 ? (
               <Text style={styles.text}>My goals</Text>
@@ -98,8 +103,8 @@ export default function App() {
           }
           ListFooterComponent={() =>
             goals.length > 0 ? (
-              <View style={styles.footer}>
-                <Button title="Delete all" onPress={deleteAllGoals} />
+              <View>
+                <Button title="Delete All" onPress={deleteAllGoals} />
               </View>
             ) : null
           }
@@ -142,14 +147,21 @@ const styles = StyleSheet.create({
   bottomView: {
     flex: 4,
     backgroundColor: "#d8bfd8",
-    // alignItems: "center",
+    alignItems: "center",
   },
   scrollViewContainer: {
-    alignItems: "center",
+    // alignItems: "center",
   },
   text: {
     color: "purple",
     fontSize: 20,
     marginTop: 10,
+    alignSelf: "center",
+  },
+  seperators: {
+    height: 4,
+    width: "100%",
+    backgroundColor: "gray",
+    alignSelf: "center",
   },
 });
