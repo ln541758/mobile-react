@@ -70,6 +70,8 @@ export default function App() {
       <View style={styles.bottomView}>
         <FlatList
           contentContainerStyle={styles.scrollViewContainer}
+          ListEmptyComponent={<Text style={styles.text}>No goals to show</Text>}
+
           data={goals}
           renderItem={({ item }) => {
             // console.log({item});
@@ -113,5 +115,10 @@ const styles = StyleSheet.create({
   },
   scrollViewContainer: {
     alignItems: "center",
+  },
+  text: {
+    color: "purple",
+    fontSize: 20,
+    marginTop: 10,
   },
 });

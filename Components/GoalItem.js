@@ -2,17 +2,17 @@ import { StyleSheet, Text, View, Button } from "react-native";
 import React from "react";
 
 export default function GoalItem({ goalObj, deleteHandler }) {
-    function handleDelete() {
-        console.log("deleted");
-        deleteHandler(goalObj.id);
-      }
+  function handleDelete() {
+    // console.log("deleted");
+    deleteHandler(goalObj.id);
+  }
   return (
     <View style={styles.textContainer}>
       <Text style={styles.text} key={goalObj.id}>
         {goalObj.text}
       </Text>
-      <Button title="X" color="gray" onPress={ handleDelete} />  
-        </View>
+      <Button title="X" color="gray" onPress={handleDelete} />
+    </View>
   );
 }
 
