@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   ScrollView,
   FlatList,
+  Alert,
 } from "react-native";
 import Header from "./Components/Header";
 import Input from "./Components/Input";
@@ -51,6 +52,23 @@ export default function App() {
     });
   }
 
+  function deleteAllGoals() {
+    Alert.alert("Delete all", "Are you sure?", [
+      {
+        text: "Yes",
+        onPress: () => {
+          setGoals([]);
+        },
+      },
+      {
+        text: "No",
+        onPress: () => {
+          console.log("Delete cancelled");
+        },
+      },
+    ]);
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topView}>
@@ -77,6 +95,13 @@ export default function App() {
             ) : (
               <Text style={styles.text}>No goals to show</Text>
             )
+          }
+          ListFooterComponent={() =>
+            goals.length > 0 ? (
+              <View style={styles.footer}>
+                <Button title="Delete all" onPress={deleteAllGoals} />
+              </View>
+            ) : null
           }
           data={goals}
           renderItem={({ item }) => {
