@@ -14,7 +14,7 @@ import Input from "./Input";
 import { useState } from "react";
 import GoalItem from "./GoalItem";
 
-export default function Home() {
+export default function Home({ navigation }) {
   const [receivedData, setReceivedData] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
@@ -73,6 +73,10 @@ export default function Home() {
     return <View style={styles.seperators} />;
   }
 
+  function handleGoalPress() {
+    navigation.navigate("Details");
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topView}>
@@ -110,8 +114,7 @@ export default function Home() {
           }
           data={goals}
           renderItem={({ item }) => {
-            // console.log({item});
-            return <GoalItem goalObj={item} deleteHandler={handleDelete} />;
+            return <GoalItem goalObj={item} deleteHandler={handleDelete} pressHandler={handleGoalPress}/>;
           }}
         />
 
