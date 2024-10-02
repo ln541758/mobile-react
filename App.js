@@ -15,16 +15,12 @@ export default function App() {
         <Stack.Screen
           name="Home"
           component={Home}
-          options={{
-            headerStyle: { backgroundColor: "purple" },
-            headerTintColor: "white",
-            title: "My goals",
-          }}
+          options={styles.header}
         />
         <Stack.Screen
           name="Details"
           component={GoalDetails}
-          options={({ route }) => ({
+          options={({ route }) => ({...styles.header,
             title: route.params ? route.params.goalData.text : "More Details",
             headerRight: () => {
               return (
@@ -43,4 +39,10 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  header: {
+    headerStyle: { backgroundColor: "purple" },
+    headerTintColor: "white",
+    title: "My goals",
+  },
+});
