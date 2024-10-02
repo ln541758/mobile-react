@@ -11,16 +11,12 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={styles.header}
-        />
+      <Stack.Navigator screenOptions={styles.header}>
+        <Stack.Screen name="Home" component={Home} />
         <Stack.Screen
           name="Details"
           component={GoalDetails}
-          options={({ route }) => ({...styles.header,
+          options={({ route }) => ({
             title: route.params ? route.params.goalData.text : "More Details",
             headerRight: () => {
               return (
