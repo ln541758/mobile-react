@@ -8,7 +8,7 @@ export default function GoalDetails({navigation, route}) {
         setWarning(true);
         console.log("warning")
         navigation.setOptions({
-            title: "Warning",
+            title: "Warning!",
         })
     }
 
@@ -19,7 +19,7 @@ export default function GoalDetails({navigation, route}) {
                   <Button
                     title="Warning"
                     onPress={handleWarning}
-                    color="red"
+                    color="white"
                   />
                 );
               },
@@ -50,6 +50,5 @@ export default function GoalDetails({navigation, route}) {
 const styles = StyleSheet.create({
     warning: {
         color: "red",
-        fontSize: 20,
     },  
 });
