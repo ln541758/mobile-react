@@ -73,6 +73,11 @@ export default function Home({ navigation, route }) {
     return <View style={styles.seperators} />;
   }
 
+  function handleGoalPress(pressGoal) {
+    // console.log(pressGoal);
+    navigation.navigate("Details", { goalData: pressGoal });
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topView}>
@@ -110,7 +115,7 @@ export default function Home({ navigation, route }) {
           }
           data={goals}
           renderItem={({ item }) => {
-            return <GoalItem goalObj={item} deleteHandler={handleDelete}/>;
+            return <GoalItem goalObj={item} deleteHandler={handleDelete} pressHandler={handleGoalPress}/>;
           }}
         />
 

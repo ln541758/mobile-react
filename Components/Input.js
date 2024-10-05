@@ -40,7 +40,7 @@ export default function Input({
   function handleConfirm() {
     // console.log(text);
     inputHandler(text);
-    setText("");
+    setMessage("");
   }
 
   const handleBlur = () => {
