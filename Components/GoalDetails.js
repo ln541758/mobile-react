@@ -50,6 +50,5 @@ export default function GoalDetails({navigation, route}) {
 const styles = StyleSheet.create({
     warning: {
         color: "red",
-        fontSize: 20,
     },  
 });
