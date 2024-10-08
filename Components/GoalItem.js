@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, Button, Pressable } from "react-native";
 import React from "react";
+import PressableButton from "./PressableButton";
 
 export default function GoalItem({ goalObj, deleteHandler, pressHandler }) {
   function handleDelete() {
@@ -12,22 +13,25 @@ export default function GoalItem({ goalObj, deleteHandler, pressHandler }) {
   }
 
   return (
-    <View
-      style={({ pressed }) => {
-        return [pressed && styles.pressedStyle, styles.horizontalContainer];
-      }}
-    >
+    <View style={styles.textContainer}>
       <Pressable
         onPress={handlePress}
-        style={() => {
-          return styles.horizontalContainer;
+        style={({ pressed }) => {
+          return [pressed && styles.pressedStyle, styles.horizontalContainer];
         }}
         anroid_ripple={{ color: "red", radius: 100 }}
       >
         <Text style={styles.text} key={goalObj.id}>
           {goalObj.text}
         </Text>
-        <Button title="X" color="gray" onPress={handleDelete} />
+        {/* <Button title="X" color="gray" onPress={handleDelete} /> */}
+        <PressableButton
+          componentStyle={styles.deleteButton}
+          onPress={handleDelete}
+          pressedStyle={styles.pressedStyle}
+        >
+          <Text style={styles.deleteText}>X</Text>
+        </PressableButton>
       </Pressable>
     </View>
   );
@@ -53,5 +57,15 @@ const styles = StyleSheet.create({
   pressedStyle: {
     opacity: 0.5,
     backgroundColor: "darkgray",
+  },
+  deleteButton: {
+    backgroundColor: "gray",
+  },
+  deleteText: {
+    color: "white",
+  },
+  pressedStyle: {
+    opacity: 0.5,
+    backgroundColor: "pink",
   },
 });

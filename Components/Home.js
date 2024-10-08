@@ -8,11 +8,13 @@ import {
   ScrollView,
   FlatList,
   Alert,
+  Pressable,
 } from "react-native";
 import Header from "./Header";
 import Input from "./Input";
 import { useState } from "react";
 import GoalItem from "./GoalItem";
+import PressableButton from "./PressableButton";
 
 export default function Home({ navigation, route }) {
   const [receivedData, setReceivedData] = useState("");
@@ -86,7 +88,16 @@ export default function Home({ navigation, route }) {
           {/* <Text>child 1</Text>
         <Text>child 2</Text> */}
         </Header>
-        <Button title="Add a Goal" onPress={isModalVisible} />
+        <PressableButton
+          pressedHandler={function () {
+            setModalVisible(true);
+          }}
+          componentStyle={styles.buttonText}
+        >
+          <Text style={styles.buttonText}>Add a goal</Text>
+        </PressableButton>
+
+        {/* <Button title="Add a Goal" onPress={isModalVisible} /> */}
         <Input
           autoFocus={true}
           inputHandler={handleInputData}
@@ -115,7 +126,13 @@ export default function Home({ navigation, route }) {
           }
           data={goals}
           renderItem={({ item }) => {
-            return <GoalItem goalObj={item} deleteHandler={handleDelete} pressHandler={handleGoalPress}/>;
+            return (
+              <GoalItem
+                goalObj={item}
+                deleteHandler={handleDelete}
+                pressHandler={handleGoalPress}
+              />
+            );
           }}
         />
 
@@ -167,5 +184,11 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "gray",
     alignSelf: "center",
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 20,
+    backgroundColor: "purple",
+    padding: 5,
   },
 });
