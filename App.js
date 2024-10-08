@@ -11,7 +11,12 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: { backgroundColor: "purple" },
+          headerTintColor: "white",
+        }}
+      >
         <Stack.Screen
           name="Home"
           component={Home}

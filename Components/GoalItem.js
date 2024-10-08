@@ -2,15 +2,19 @@ import { StyleSheet, Text, View, Button, Pressable } from "react-native";
 import React from "react";
 import PressableButton from "./PressableButton";
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { useNavigation } from "@react-navigation/native";
+
 
 export default function GoalItem({ goalObj, deleteHandler, pressHandler }) {
+  const navigation = useNavigation();
   function handleDelete() {
     // console.log("deleted");
     deleteHandler(goalObj.id);
   }
 
   function handlePress() {
-    pressHandler(goalObj);
+    // pressHandler(goalObj);
+    navigation.navigate("Details", { goalData: goalObj });
   }
 
   return (

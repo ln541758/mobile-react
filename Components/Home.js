@@ -75,10 +75,10 @@ export default function Home({ navigation, route }) {
     return <View style={styles.seperators} />;
   }
 
-  function handleGoalPress(pressGoal) {
-    // console.log(pressGoal);
-    navigation.navigate("Details", { goalData: pressGoal });
-  }
+  // function handleGoalPress(pressGoal) {
+  //   // console.log(pressGoal);
+  //   navigation.navigate("Details", { goalData: pressGoal });
+  // }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -89,9 +89,7 @@ export default function Home({ navigation, route }) {
         <Text>child 2</Text> */}
         </Header>
         <PressableButton
-          pressedHandler={function () {
-            setModalVisible(true);
-          }}
+          onPress={isModalVisible}
           componentStyle={styles.buttonText}
         >
           <Text style={styles.buttonText}>Add a goal</Text>
@@ -126,13 +124,7 @@ export default function Home({ navigation, route }) {
           }
           data={goals}
           renderItem={({ item }) => {
-            return (
-              <GoalItem
-                goalObj={item}
-                deleteHandler={handleDelete}
-                pressHandler={handleGoalPress}
-              />
-            );
+            return <GoalItem deleteHandler={handleDelete} goalObj={item} />;
           }}
         />
 
