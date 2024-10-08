@@ -1,6 +1,7 @@
 import { Button, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import PressableButton from "./PressableButton";
+import Entypo from '@expo/vector-icons/Entypo';
 
 export default function GoalDetails({ navigation, route }) {
   // console.log(route.params.goalData);
@@ -22,7 +23,7 @@ export default function GoalDetails({ navigation, route }) {
           componentStyle={styles.warningStyle}
           pressedStyle={styles.warningButtonPressed}
         >
-          <Text style={styles.warningStyle}>Warning</Text>
+          <Entypo name="warning" size={24} color="red" />
         </PressableButton>
       ),
     });
