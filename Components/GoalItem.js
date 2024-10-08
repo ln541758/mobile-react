@@ -11,17 +11,25 @@ export default function GoalItem({ goalObj, deleteHandler, pressHandler }) {
     pressHandler(goalObj);
   }
 
-
-
   return (
-    <Pressable onPress={handlePress}>
-      <View style={styles.textContainer}>
+    <View
+      style={({ pressed }) => {
+        return [pressed && styles.pressedStyle, styles.horizontalContainer];
+      }}
+    >
+      <Pressable
+        onPress={handlePress}
+        style={() => {
+          return styles.horizontalContainer;
+        }}
+        anroid_ripple={{ color: "red", radius: 100 }}
+      >
         <Text style={styles.text} key={goalObj.id}>
           {goalObj.text}
         </Text>
         <Button title="X" color="gray" onPress={handleDelete} />
-      </View>
-    </Pressable>
+      </Pressable>
+    </View>
   );
 }
 
@@ -31,11 +39,19 @@ const styles = StyleSheet.create({
     padding: 5,
     margin: 10,
     borderRadius: 5,
-    flexDirection: "row",
     alignItems: "center",
   },
   text: {
     color: "purple",
     fontSize: 20,
+  },
+  horizontalContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "darkgray",
+  },
+  pressedStyle: {
+    opacity: 0.5,
+    backgroundColor: "darkgray",
   },
 });
