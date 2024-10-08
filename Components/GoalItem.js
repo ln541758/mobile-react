@@ -24,7 +24,7 @@ export default function GoalItem({ goalObj, deleteHandler, pressHandler }) {
         style={({ pressed }) => {
           return [pressed && styles.pressedStyle, styles.horizontalContainer];
         }}
-        anroid_ripple={{ color: "red", radius: 100 }}
+        android_ripple={{ color: "red", radius: 100 }}
       >
         <Text style={styles.text} key={goalObj.id}>
           {goalObj.text}
