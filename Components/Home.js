@@ -90,7 +90,8 @@ export default function Home({ navigation, route }) {
         </Header>
         <PressableButton
           onPress={isModalVisible}
-          componentStyle={styles.buttonText}
+          componentStyle={styles.buttonDefault}
+          pressedStyle={styles.buttonPressed}
         >
           <Text style={styles.buttonText}>Add a goal</Text>
         </PressableButton>
@@ -180,7 +181,14 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 20,
-    backgroundColor: "purple",
     padding: 5,
+  },
+  buttonDefault: {
+    backgroundColor: "purple",
+    margin: 10,
+    padding: 5,
+  },
+  buttonPressed: {
+    backgroundColor: "pink",
   },
 });

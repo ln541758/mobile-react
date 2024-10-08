@@ -11,7 +11,7 @@ export default function PressableButton({
     <Pressable
       onPress={onPress}
       style={({ pressed }) => {
-        return [pressed && styles.defaultStyle, componentStyle, pressed && pressedStyle];
+        return [styles.defaultStyle, componentStyle, pressed && pressedStyle];
       }}
     >
       <View>{children}</View>
