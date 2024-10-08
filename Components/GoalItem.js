@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Button, Pressable } from "react-native";
 import React from "react";
 import PressableButton from "./PressableButton";
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 export default function GoalItem({ goalObj, deleteHandler, pressHandler }) {
   function handleDelete() {
@@ -30,7 +31,8 @@ export default function GoalItem({ goalObj, deleteHandler, pressHandler }) {
           onPress={handleDelete}
           pressedStyle={styles.pressedStyle}
         >
-          <Text style={styles.deleteText}>X</Text>
+          {/* <Text style={styles.deleteText}>X</Text> */}
+          <AntDesign name="delete" size={24} color="black" />
         </PressableButton>
       </Pressable>
     </View>
