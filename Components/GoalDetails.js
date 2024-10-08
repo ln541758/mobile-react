@@ -1,5 +1,6 @@
 import { Button, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
+import PressableButton from "./PressableButton";
 
 export default function GoalDetails({ navigation, route }) {
   // console.log(route.params.goalData);
@@ -12,13 +13,20 @@ export default function GoalDetails({ navigation, route }) {
       title: "Warning",
     });
   };
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Button onPress={handleWarning} title="Warning" color="red" />
+        <PressableButton
+          onPress={handleWarning}
+          componentStyle={styles.warningStyle}
+          pressedStyle={styles.warningButtonPressed}
+        >
+          <Text style={styles.warningStyle}>Warning</Text>
+        </PressableButton>
       ),
     });
-  });
+  }, [navigation, handleWarning]);
 
   function moreDetailsHandler() {
     navigation.push("Details");
@@ -42,5 +50,9 @@ export default function GoalDetails({ navigation, route }) {
 const styles = StyleSheet.create({
   warningStyle: {
     color: "red",
+  },
+
+  warningButtonPressed: {
+    backgroundColor: "purple",
   },
 });
