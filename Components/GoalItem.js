@@ -5,7 +5,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { useNavigation } from "@react-navigation/native";
 
 
-export default function GoalItem({ goalObj, deleteHandler, pressHandler }) {
+export default function GoalItem({ goalObj, deleteHandler, onPressIn, onPressOut }) {
   const navigation = useNavigation();
   function handleDelete() {
     // console.log("deleted");
@@ -34,6 +34,8 @@ export default function GoalItem({ goalObj, deleteHandler, pressHandler }) {
       <Pressable
         onPress={handlePress}
         onLongPress={handleLongPress}
+        onPressIn={onPressIn}
+        onPressOut={onPressOut}
         style={({ pressed }) => {
           return [pressed && styles.pressedStyle, styles.horizontalContainer];
         }}

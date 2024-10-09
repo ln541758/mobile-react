@@ -71,8 +71,15 @@ export default function Home({ navigation, route }) {
     ]);
   }
 
-  function renderSeparator() {
-    return <View style={styles.seperators} />;
+  function renderSeparator({ highlighted }) {
+    return (
+      <View
+        style={[
+          styles.seperators,
+          highlighted ? styles.seperatorHighlighted : null,
+        ]}
+      />
+    );
   }
 
   // function handleGoalPress(pressGoal) {
@@ -124,8 +131,15 @@ export default function Home({ navigation, route }) {
             ) : null
           }
           data={goals}
-          renderItem={({ item }) => {
-            return <GoalItem deleteHandler={handleDelete} goalObj={item} />;
+          renderItem={({ item, separators }) => {
+            return (
+              <GoalItem
+                deleteHandler={handleDelete}
+                goalObj={item}
+                onPressIn={() => separators.highlight()}
+                onPressOut={() => separators.unhighlight()}
+              />
+            );
           }}
         />
 
@@ -177,6 +191,9 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "gray",
     alignSelf: "center",
+  },
+  seperatorHighlighted: {
+    backgroundColor: "purple",
   },
   buttonText: {
     color: "white",
