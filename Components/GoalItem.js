@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button, Pressable } from "react-native";
+import { StyleSheet, Text, View, Button, Pressable, Alert } from "react-native";
 import React from "react";
 import PressableButton from "./PressableButton";
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -17,10 +17,23 @@ export default function GoalItem({ goalObj, deleteHandler, pressHandler }) {
     navigation.navigate("Details", { goalData: goalObj });
   }
 
+  function handleLongPress() {
+    Alert.alert("Delete", "Are you sure you want to delete this item?", [
+      {
+        text: "No",
+      },
+      {
+        text: "Yes",
+        onPress: handleDelete,
+      }
+    ]);
+  }
+
   return (
     <View style={styles.textContainer}>
       <Pressable
         onPress={handlePress}
+        onLongPress={handleLongPress}
         style={({ pressed }) => {
           return [pressed && styles.pressedStyle, styles.horizontalContainer];
         }}
@@ -30,6 +43,7 @@ export default function GoalItem({ goalObj, deleteHandler, pressHandler }) {
           {goalObj.text}
         </Text>
         {/* <Button title="X" color="gray" onPress={handleDelete} /> */}
+        {/* <Button title="i" onPress={()=>{navigation.navigate("Details", { goalData: goalObj })}} /> */}
         <PressableButton
           componentStyle={styles.deleteButton}
           onPress={handleDelete}
