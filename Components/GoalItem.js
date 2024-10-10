@@ -37,9 +37,9 @@ export default function GoalItem({ goalObj, deleteHandler, onPressIn, onPressOut
         onPressIn={onPressIn}
         onPressOut={onPressOut}
         style={({ pressed }) => {
-          return [pressed && styles.pressedStyle, styles.horizontalContainer];
+          return [styles.horizontalContainer, pressed && styles.pressedStyle];
         }}
-        android_ripple={{ color: "red", radius: 100 }}
+        android_ripple={{ color: "red", radius: 20 }}
       >
         <Text style={styles.text} key={goalObj.id}>
           {goalObj.text}
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     backgroundColor: "darkgray",
   },
   deleteButton: {
-    backgroundColor: "gray",
+    backgroundColor: "darkgray",
   },
   deleteText: {
     color: "white",

@@ -21,7 +21,6 @@ export default function PressableButton({
 
 const styles = StyleSheet.create({
   defaultStyle: {
-    
     margin: 10,
     padding: 5
   },
