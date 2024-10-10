@@ -54,6 +54,6 @@ const styles = StyleSheet.create({
   },
 
   warningButtonPressed: {
-    backgroundColor: "purple",
+    backgroundColor: "yellow",
   },
 });

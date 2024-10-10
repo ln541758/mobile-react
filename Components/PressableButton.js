@@ -21,7 +21,6 @@ export default function PressableButton({
 
 const styles = StyleSheet.create({
   defaultStyle: {
-    backgroundColor: "beige",
     margin: 10,
     padding: 5
   },
