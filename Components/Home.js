@@ -15,10 +15,11 @@ import Input from "./Input";
 import { useState } from "react";
 import GoalItem from "./GoalItem";
 import PressableButton from "./PressableButton";
-import { app } from "../Firebase/firebaseSetup";
+// import { app } from "../Firebase/firebaseSetup";
+import {database} from "../Firebase/firebaseSetup";
 
 export default function Home({ navigation, route }) {
-  console.log(app);
+  console.log(database);
   const [receivedData, setReceivedData] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
