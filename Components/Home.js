@@ -12,19 +12,31 @@ import {
 } from "react-native";
 import Header from "./Header";
 import Input from "./Input";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import GoalItem from "./GoalItem";
 import PressableButton from "./PressableButton";
 // import { app } from "../Firebase/firebaseSetup";
-import {database} from "../Firebase/firebaseSetup";
+import { database } from "../Firebase/firebaseSetup";
+import { writeToDB } from "../Firebase/firestoreHelper";
+import { collection, onSnapshot } from "firebase/firestore";
 
 export default function Home({ navigation, route }) {
-  console.log(database);
+  // console.log(database);
+
   const [receivedData, setReceivedData] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
 
   const appName = "My awesome app";
+
+  useEffect(() => {
+    onSnapshot(collection(database, "goals"), (querySnapShot) => {
+      querySnapShot.forEach((docSnapshot) => {
+        newArray.push(docSnapshot.data);
+      });
+    });
+  }, []);
+
   function handleInputData(data) {
     console.log("App.js ", data);
 
@@ -32,6 +44,8 @@ export default function Home({ navigation, route }) {
     setGoals((prevGoals) => {
       return [...prevGoals, newGoal];
     });
+
+    writeToDB("goal", newGoal);
 
     setReceivedData(data);
     setModalVisible(false);
