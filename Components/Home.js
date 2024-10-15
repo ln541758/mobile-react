@@ -37,6 +37,7 @@ export default function Home({ navigation, route }) {
     onSnapshot(collection(database, "goals"), (querySnapShot) => {
       let newArray = [];
       querySnapShot.forEach((docSnapshot) => {
+        // Retrieve and store Document's ID
         newArray.push({...docSnapshot.data(), id: docSnapshot.id});
       });
       console.log("newArray ", newArray);
