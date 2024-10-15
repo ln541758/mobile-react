@@ -17,7 +17,11 @@ import GoalItem from "./GoalItem";
 import PressableButton from "./PressableButton";
 // import { app } from "../Firebase/firebaseSetup";
 import { database } from "../Firebase/firebaseSetup";
-import { writeToDB } from "../Firebase/firestoreHelper";
+import {
+  writeToDB,
+  deleteFromDB,
+  deleteAllFromDB,
+} from "../Firebase/firestoreHelper";
 import { collection, onSnapshot } from "firebase/firestore";
 
 export default function Home({ navigation, route }) {
@@ -31,21 +35,24 @@ export default function Home({ navigation, route }) {
 
   useEffect(() => {
     onSnapshot(collection(database, "goals"), (querySnapShot) => {
+      let newArray = [];
       querySnapShot.forEach((docSnapshot) => {
-        newArray.push(docSnapshot.data);
+        newArray.push({...docSnapshot.data(), id: docSnapshot.id});
       });
+      console.log("newArray ", newArray);
+      setGoals(newArray);
     });
   }, []);
 
   function handleInputData(data) {
     console.log("App.js ", data);
 
-    let newGoal = { text: data, id: Math.random() };
-    setGoals((prevGoals) => {
-      return [...prevGoals, newGoal];
-    });
+    let newGoal = { text: data };
+    // setGoals((prevGoals) => {
+    //   return [...prevGoals, newGoal];
+    // });
 
-    writeToDB("goal", newGoal);
+    writeToDB("goals", newGoal);
 
     setReceivedData(data);
     setModalVisible(false);
@@ -64,11 +71,13 @@ export default function Home({ navigation, route }) {
     // const newGoals = goals.filter((goalObj) => {
     //   return goalObj.id !== deletedId;
     // });
-    setGoals((prevGoals) => {
-      return prevGoals.filter((goalObj) => {
-        return goalObj.id !== deletedId;
-      });
-    });
+
+    // setGoals((prevGoals) => {
+    //   return prevGoals.filter((goalObj) => {
+    //     return goalObj.id !== deletedId;
+    //   });
+    // });
+    deleteFromDB(deletedId, "goals");
   }
 
   function deleteAllGoals() {
@@ -76,7 +85,8 @@ export default function Home({ navigation, route }) {
       {
         text: "Yes",
         onPress: () => {
-          setGoals([]);
+          // setGoals([]);
+          deleteAllFromDB("goals");
         },
       },
       {

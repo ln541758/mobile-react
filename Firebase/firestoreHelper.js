@@ -1,4 +1,4 @@
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, deleteDoc, doc, getDocs } from "firebase/firestore";
 import { database } from "./firebaseSetup";
 
 export async function writeToDB(collectionName, data) {
@@ -8,5 +8,26 @@ export async function writeToDB(collectionName, data) {
     // console.log(docRef);
   } catch (err) {
     console.error("write to db ", err);
+  }
+}
+
+export async function deleteFromDB(deletedID, collectionName) {
+  console.log("deleteFromDB ", deletedID, collectionName);
+  try {
+    await deleteDoc(doc(database, collectionName, deletedID));
+  } catch (err) {
+    console.error("delete from db ", err);
+  }
+}
+
+export async function deleteAllFromDB(collectionName) {
+  try {
+    // get all the documents in the collection
+    const querySnapshot = await getDocs(collection(database, collectionName));
+    querySnapshot.forEach((docSnapShot) => {
+      deleteDoc(doc(database, collectionName, docSnapShot.id));
+    });
+  } catch (err) {
+    console.error("delete all from db ", err);
   }
 }
