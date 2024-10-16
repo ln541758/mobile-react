@@ -12,23 +12,50 @@ import {
 } from "react-native";
 import Header from "./Header";
 import Input from "./Input";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import GoalItem from "./GoalItem";
 import PressableButton from "./PressableButton";
+// import { app } from "../Firebase/firebaseSetup";
+import { database } from "../Firebase/firebaseSetup";
+import {
+  writeToDB,
+  deleteFromDB,
+  deleteAllFromDB,
+} from "../Firebase/firestoreHelper";
+import { collection, onSnapshot } from "firebase/firestore";
 
 export default function Home({ navigation, route }) {
+  // console.log(database);
+
   const [receivedData, setReceivedData] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
 
   const appName = "My awesome app";
+
+  useEffect(() => {
+    onSnapshot(collection(database, "goals"), (querySnapShot) => {
+      let newArray = [];
+      if (!querySnapShot.empty) {
+        querySnapShot.forEach((docSnapshot) => {
+          // Retrieve and store Document's ID
+          newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
+        });
+      }
+      // console.log("newArray ", newArray);
+      setGoals(newArray);
+    });
+  }, []);
+
   function handleInputData(data) {
     console.log("App.js ", data);
 
-    let newGoal = { text: data, id: Math.random() };
-    setGoals((prevGoals) => {
-      return [...prevGoals, newGoal];
-    });
+    let newGoal = { text: data };
+    // setGoals((prevGoals) => {
+    //   return [...prevGoals, newGoal];
+    // });
+
+    writeToDB("goals", newGoal);
 
     setReceivedData(data);
     setModalVisible(false);
@@ -47,11 +74,13 @@ export default function Home({ navigation, route }) {
     // const newGoals = goals.filter((goalObj) => {
     //   return goalObj.id !== deletedId;
     // });
-    setGoals((prevGoals) => {
-      return prevGoals.filter((goalObj) => {
-        return goalObj.id !== deletedId;
-      });
-    });
+
+    // setGoals((prevGoals) => {
+    //   return prevGoals.filter((goalObj) => {
+    //     return goalObj.id !== deletedId;
+    //   });
+    // });
+    deleteFromDB(deletedId, "goals");
   }
 
   function deleteAllGoals() {
@@ -59,7 +88,8 @@ export default function Home({ navigation, route }) {
       {
         text: "Yes",
         onPress: () => {
-          setGoals([]);
+          // setGoals([]);
+          deleteAllFromDB("goals");
         },
       },
       {
