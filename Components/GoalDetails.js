@@ -1,18 +1,22 @@
 import { Button, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import PressableButton from "./PressableButton";
-import Entypo from '@expo/vector-icons/Entypo';
+import Entypo from "@expo/vector-icons/Entypo";
+import { markGoalAsWarning } from "../Firebase/firestoreHelper";
 
 export default function GoalDetails({ navigation, route }) {
   // console.log(route.params.goalData);
 
   const [warning, setWarning] = useState(false);
 
-  const handleWarning = () => {
-    setWarning(true);
-    navigation.setOptions({
-      title: "Warning",
-    });
+  const handleWarning = async () => {
+    if (route.params && route.params.goalData && route.params.goalData.id) {
+      setWarning(true);
+      navigation.setOptions({
+        title: "Warning",
+      });
+      await markGoalAsWarning(route.params.goalData.id);
+    }
   };
 
   useEffect(() => {

@@ -9,6 +9,7 @@ import {
   FlatList,
   Alert,
   Pressable,
+  unstable_batchedUpdates,
 } from "react-native";
 import Header from "./Header";
 import Input from "./Input";
@@ -34,7 +35,7 @@ export default function Home({ navigation, route }) {
   const appName = "My awesome app";
 
   useEffect(() => {
-    onSnapshot(collection(database, "goals"), (querySnapShot) => {
+    const unsubscribe = onSnapshot(collection(database, "goals"), (querySnapShot) => {
       let newArray = [];
       if (!querySnapShot.empty) {
         querySnapShot.forEach((docSnapshot) => {
@@ -45,6 +46,10 @@ export default function Home({ navigation, route }) {
       // console.log("newArray ", newArray);
       setGoals(newArray);
     });
+    // detach the listerner
+    return() => {
+      unsubscribe();
+    }
   }, []);
 
   function handleInputData(data) {
