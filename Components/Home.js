@@ -36,11 +36,13 @@ export default function Home({ navigation, route }) {
   useEffect(() => {
     onSnapshot(collection(database, "goals"), (querySnapShot) => {
       let newArray = [];
-      querySnapShot.forEach((docSnapshot) => {
-        // Retrieve and store Document's ID
-        newArray.push({...docSnapshot.data(), id: docSnapshot.id});
-      });
-      console.log("newArray ", newArray);
+      if (!querySnapShot.empty) {
+        querySnapShot.forEach((docSnapshot) => {
+          // Retrieve and store Document's ID
+          newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
+        });
+      }
+      // console.log("newArray ", newArray);
       setGoals(newArray);
     });
   }, []);
