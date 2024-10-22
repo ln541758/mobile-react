@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import React, { useEffect } from "react";
 
 export default function GoalUsers() {
@@ -21,6 +21,10 @@ export default function GoalUsers() {
   return (
     <View>
       <Text>GoalUsers</Text>
+      <FlatList
+        data={users}
+        renderItem={({ item }) => <Text>{item.name}</Text>}
+      />
     </View>
   );
 }
