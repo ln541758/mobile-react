@@ -4,6 +4,7 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  updateDoc,
 } from "firebase/firestore";
 import { database } from "./firebaseSetup";
 
@@ -35,5 +36,13 @@ export async function deleteAllFromDB(collectionName) {
     });
   } catch (err) {
     console.error("delete all from db ", err);
+  }
+}
+
+export async function markGoalAsWarning(goalID) {
+  try {
+    await updateDoc(doc(database, "goals", goalID), { warning: true });
+  } catch (err) {
+    console.error("mark goal as warning ", err);
   }
 }
