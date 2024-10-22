@@ -9,13 +9,13 @@ export default function GoalDetails({ navigation, route }) {
 
   const [warning, setWarning] = useState(false);
 
-  const handleWarning = async () => {
+  function handleWarning() {
     if (route.params && route.params.goalData && route.params.goalData.id) {
       setWarning(true);
       navigation.setOptions({
         title: "Warning",
       });
-      await markGoalAsWarning(route.params.goalData.id);
+      markGoalAsWarning(route.params.goalData.id);
     }
   };
 
