@@ -46,3 +46,28 @@ export async function markGoalAsWarning(goalID) {
     console.error("mark goal as warning ", err);
   }
 }
+
+export async function addUserToSubcollection(userData, goalId) {
+  try {
+    const userSubcollectionRef = collection(database, `goals/${goalId}/users`);
+    await addDoc(userSubcollectionRef, userData);
+  } catch (err) {
+    console.error("Error adding user to subcollection", err);
+  }
+}
+
+export async function fetchUsers(goalId) {
+  try {
+    const querySnapshot = await getDocs(
+      collection(database, `goals/${goalId}/users`)
+    );
+    const users = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return users;
+  } catch (error) {
+    console.error("Error fetching user data", error);
+    return [];
+  }
+}

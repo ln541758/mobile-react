@@ -49,7 +49,7 @@ export default function GoalDetails({ navigation, route }) {
         <Text style={warning && styles.warningStyle}>More Details</Text>
       )}
       <Button title="More Details" onPress={moreDetailsHandler} />
-      <GoalUsers/>
+      <GoalUsers goalId={route.params?.goalData?.id}/>
     </View>
   );
 }
