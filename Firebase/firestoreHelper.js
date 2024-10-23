@@ -46,3 +46,20 @@ export async function markGoalAsWarning(goalID) {
     console.error("mark goal as warning ", err);
   }
 }
+
+export async function fetchUsers(collectionName) {
+  try {
+    const querySnapshot = await getDocs(
+      collection(database, collectionName)
+    );
+    let newArray = [];
+    if (querySnapshot.empty) {
+      querySnapshot.forEach((docSnapshot) => {
+        newArray.push(docSnapshot.data());
+    });
+    }
+    return newArray;
+  } catch (error) {
+    console.error("Error fetching user data", error);
+  }
+}

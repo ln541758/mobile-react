@@ -3,19 +3,20 @@ import React, { useEffect, useState } from "react";
 import PressableButton from "./PressableButton";
 import Entypo from "@expo/vector-icons/Entypo";
 import { markGoalAsWarning } from "../Firebase/firestoreHelper";
+import GoalUsers from "./GoalUsers";
 
 export default function GoalDetails({ navigation, route }) {
   // console.log(route.params.goalData);
 
   const [warning, setWarning] = useState(false);
 
-  const handleWarning = async () => {
+  function handleWarning() {
     if (route.params && route.params.goalData && route.params.goalData.id) {
       setWarning(true);
       navigation.setOptions({
         title: "Warning",
       });
-      await markGoalAsWarning(route.params.goalData.id);
+      markGoalAsWarning(route.params.goalData.id);
     }
   };
 
@@ -48,6 +49,7 @@ export default function GoalDetails({ navigation, route }) {
         <Text style={warning && styles.warningStyle}>More Details</Text>
       )}
       <Button title="More Details" onPress={moreDetailsHandler} />
+      <GoalUsers goalId={route.params?.goalData?.id}/>
     </View>
   );
 }
