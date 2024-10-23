@@ -53,9 +53,11 @@ export async function fetchUsers(collectionName) {
       collection(database, collectionName)
     );
     let newArray = [];
-    querySnapshot.forEach((docSnapshot) => {
+    if (querySnapshot.empty) {
+      querySnapshot.forEach((docSnapshot) => {
         newArray.push(docSnapshot.data());
     });
+    }
     return newArray;
   } catch (error) {
     console.error("Error fetching user data", error);
