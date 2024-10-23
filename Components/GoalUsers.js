@@ -1,9 +1,6 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { Button, FlatList, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import {
-  addUserToSubcollection,
-  fetchUsers,
-} from "../Firebase/firestoreHelper";
+import { writeToDB, fetchUsers } from "../Firebase/firestoreHelper";
 
 export default function GoalUsers({ goalId }) {
   const [users, setUsers] = useState([]);
@@ -11,7 +8,7 @@ export default function GoalUsers({ goalId }) {
   useEffect(() => {
     async function fetchUsersData() {
       try {
-        const usersFromFirestore = await fetchUsers(goalId);
+        const usersFromFirestore = await fetchUsers(`goals/${goalId}/users`);
         if (usersFromFirestore.length > 0) {
           setUsers(usersFromFirestore.map((user) => user.name));
         } else {
@@ -24,9 +21,9 @@ export default function GoalUsers({ goalId }) {
             );
           }
           const data = await response.json();
-          for (const user of data) {
-            await addUserToSubcollection(user, goalId);
-          }
+          data.forEach((user) => {
+            writeToDB(`goals/${goalId}/users`, user);
+          });
           setUsers(data.map((user) => user.name));
         }
       } catch (error) {
@@ -38,11 +35,7 @@ export default function GoalUsers({ goalId }) {
 
   return (
     <View>
-      <Text>GoalUsers</Text>
-      <FlatList
-        data={users}
-        renderItem={({ item }) => <Text>{item}</Text>}
-      />
+      <FlatList data={users} renderItem={({ item }) => <Text>{item}</Text>} />
     </View>
   );
 }

@@ -47,27 +47,17 @@ export async function markGoalAsWarning(goalID) {
   }
 }
 
-export async function addUserToSubcollection(userData, goalId) {
-  try {
-    const userSubcollectionRef = collection(database, `goals/${goalId}/users`);
-    await addDoc(userSubcollectionRef, userData);
-  } catch (err) {
-    console.error("Error adding user to subcollection", err);
-  }
-}
-
-export async function fetchUsers(goalId) {
+export async function fetchUsers(collectionName) {
   try {
     const querySnapshot = await getDocs(
-      collection(database, `goals/${goalId}/users`)
+      collection(database, collectionName)
     );
-    const users = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    return users;
+    let newArray = [];
+    querySnapshot.forEach((docSnapshot) => {
+        newArray.push(docSnapshot.data());
+    });
+    return newArray;
   } catch (error) {
     console.error("Error fetching user data", error);
-    return [];
   }
 }
