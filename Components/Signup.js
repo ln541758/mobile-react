@@ -31,7 +31,8 @@ export default function Signup({ navigation }) {
       // Create user with Firebase
       const userCred = await createUserWithEmailAndPassword(auth, email, password);
       alert("User created successfully!");
-      navigation.replace("Login");
+      // navigation.replace("Login");
+      navigation.navigation("Home");
     } catch (error) {
       Alert.alert("Signup Error", error.message);
     }

@@ -1,6 +1,9 @@
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import React from "react";
 import { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../Firebase/firebaseSetup";
+import { Alert } from "react-native";
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
@@ -10,8 +13,17 @@ export default function Login({ navigation }) {
     navigation.replace("Sign up");
   }
 
-  const handleLogin = () => {
-  }
+  const handleLogin = async () => {
+    try {
+      if (email === "" || password === "") {
+        throw new Error("Email and password are required");
+      }
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      navigation.replace("Home"); 
+    } catch (error) {
+      Alert.alert("Login Error", error.message);
+    }
+  };
 
   return (
 <View style={styles.container}>
