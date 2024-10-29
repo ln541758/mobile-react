@@ -10,7 +10,7 @@ export default function Login({ navigation }) {
   const [password, setPassword] = useState("");
 
   function handleRegister() {
-    navigation.replace("Sign up");
+    navigation.replace("Signup");
   }
 
   const handleLogin = async () => {
@@ -18,8 +18,7 @@ export default function Login({ navigation }) {
       if (email === "" || password === "") {
         throw new Error("Email and password are required");
       }
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      navigation.replace("Home"); 
+      await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
       Alert.alert("Login Error", error.message);
     }

@@ -69,14 +69,13 @@ export default function App() {
         options={({ navigation }) => ({
           headerRight: () => (
             <Pressable
-              onPress={() => {
-                signOut(auth)
-                  .then(() => {
-                    navigation.replace("Home");
-                  })
-                  .catch((error) => {
-                    console.error("Logout failed: ", error);
-                  });
+              onPress={async () => {
+                try {
+                  await signOut(auth);
+                  navigation.replace("Login");
+                } catch (error) {
+                  console.error("Logout failed: ", error);
+                }
               }}
               style={({ pressed }) => [
                 {
