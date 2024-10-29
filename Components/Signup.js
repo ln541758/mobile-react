@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { StyleSheet, Text, View, Keyboard, Alert } from "react-native";
+import React, { useState } from "react";
 import { Button, TextInput } from "react-native";
-import { useState } from "react";
 import { auth } from "../Firebase/firebaseSetup";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { TouchableWithoutFeedback } from "react-native";
 
 export default function Signup({ navigation }) {
   const [email, setEmail] = useState("");
@@ -15,55 +15,60 @@ export default function Signup({ navigation }) {
   }
 
   const handleSignup = async () => {
-    // email, password are not empty
-    if (email === "" || password === "") {
-      alert("Email and password are required");
-      return;
-    }
-    // if password and confirm are the same then create user
-    if (password !== confirm) {
-      alert("Passwords do not match");
-      return;
-    } else {
-      try {
-        await createUserWithEmailAndPassword(auth, email, password);
-        alert("User created");
-      } catch (error) {
-        alert("Error creating user");
+    try {
+      // email, password, confirm are not empty
+      if (email === "" || password === "" || confirm === "") {
+        throw new Error("Email and password are required");
       }
+
+      // if password and confirm are the same then create user
+      if (password !== confirm) {
+        throw new Error("Passwords do not match");
+      }
+
+      // other check: regex email, password length, etc.
+
+      // Create user with Firebase
+      const userCred = await createUserWithEmailAndPassword(auth, email, password);
+      alert("User created successfully!");
+      navigation.replace("Login");
+    } catch (error) {
+      Alert.alert("Signup Error", error.message);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.label}>Email Address</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      <Text style={styles.label}>Password</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry={true}
-      />
-      <Text style={styles.label}>Confirm password</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={confirm}
-        onChangeText={setConfirm}
-        secureTextEntry={true}
-      />
-      <Button title="Register" onPress={handleSignup} />
-      <Button title="Already Registered? Login" onPress={handleLogin} />
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={styles.container}>
+        <Text style={styles.label}>Email Address</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+        <Text style={styles.label}>Password</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={true}
+        />
+        <Text style={styles.label}>Confirm Password</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Confirm Password"
+          value={confirm}
+          onChangeText={setConfirm}
+          secureTextEntry={true}
+        />
+        <Button title="Register" onPress={handleSignup} />
+        <Button title="Already Registered? Login" onPress={handleLogin} />
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 

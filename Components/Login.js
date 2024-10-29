@@ -1,9 +1,16 @@
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import React from "react";
+import { useState } from "react";
 
 export default function Login({ navigation }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   function handleRegister() {
     navigation.replace("Sign up");
+  }
+
+  const handleLogin = () => {
   }
 
   return (
@@ -25,8 +32,8 @@ export default function Login({ navigation }) {
         onChangeText={setPassword}
         secureTextEntry={true}
       />
-      <Button title="Register" onPress={handleSignup} />
-      <Button title="Already Registered? Login" onPress={handleLogin} />
+      <Button title="Login" onPress={handleLogin} />
+      <Button title="New User? Create an account" onPress={handleRegister} />
     </View>
   );
 }

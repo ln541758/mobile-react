@@ -7,10 +7,66 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Signup from "./Components/Signup";
 import Login from "./Components/Login";
 
-const Stack = createNativeStackNavigator();
-// console.log(Stack);
+import { onAuthStateChanged } from "firebase/auth";
+import { useEffect, useState } from "react";
+import { auth } from "./Firebase/firebaseSetup";
 
 export default function App() {
+  const Stack = createNativeStackNavigator();
+  // console.log(Stack);
+
+  const AuthStack = (
+    <>
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Signup" component={Signup} />
+    </>
+  );
+
+  const AppStack = (
+    <>
+      <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{
+          headerStyle: { backgroundColor: "purple" },
+          headerTintColor: "white",
+          title: "My goals",
+        }}
+      />
+      <Stack.Screen
+        name="Details"
+        component={GoalDetails}
+        options={({ route }) => ({
+          title: route.params ? route.params.goalData.text : "More Details",
+          headerRight: () => {
+            return (
+              <Button
+                title="Warning"
+                onPress={() => {
+                  console.log("warning");
+                }}
+              />
+            );
+          },
+        })}
+      />
+    </>
+  );
+
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      // console.log(user);
+      if (user) {
+        setIsUserLoggedIn(true);
+      } else {
+        setIsUserLoggedIn(false);
+      }
+    });
+    return unsubscribe;
+  }, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -19,46 +75,7 @@ export default function App() {
           headerTintColor: "white",
         }}
       >
-        <Stack.Screen
-          name="Signup"
-          component={Signup}
-          options={{
-            title: "Signup",
-          }}
-        />
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{
-            title: "Login",
-          }}
-        />
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{
-            headerStyle: { backgroundColor: "purple" },
-            headerTintColor: "white",
-            title: "My goals",
-          }}
-        />
-        <Stack.Screen
-          name="Details"
-          component={GoalDetails}
-          options={({ route }) => ({
-            title: route.params ? route.params.goalData.text : "More Details",
-            headerRight: () => {
-              return (
-                <Button
-                  title="Warning"
-                  onPress={() => {
-                    console.log("warning");
-                  }}
-                />
-              );
-            },
-          })}
-        />
+        {isUserLoggedIn ? AppStack : AuthStack}
       </Stack.Navigator>
     </NavigationContainer>
   );
