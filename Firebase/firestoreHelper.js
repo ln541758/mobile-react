@@ -10,6 +10,7 @@ import { database } from "./firebaseSetup";
 
 export async function writeToDB(collectionName, data) {
   try {
+    data = { ...data, owner: auth.currentUser.uid };
     await addDoc(collection(database, collectionName), data);
     // console.log("Document written with ID: ", docRef.id);
     // console.log(docRef);
@@ -49,14 +50,12 @@ export async function markGoalAsWarning(goalID) {
 
 export async function fetchUsers(collectionName) {
   try {
-    const querySnapshot = await getDocs(
-      collection(database, collectionName)
-    );
+    const querySnapshot = await getDocs(collection(database, collectionName));
     let newArray = [];
     if (querySnapshot.empty) {
       querySnapshot.forEach((docSnapshot) => {
         newArray.push(docSnapshot.data());
-    });
+      });
     }
     return newArray;
   } catch (error) {
