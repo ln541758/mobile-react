@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import React from "react";
 import { useState, useEffect, useRef } from "react";
+import ImageManager from "./ImageManager";
 
 export default function Input({
   autoFocus,
@@ -75,6 +76,7 @@ export default function Input({
     <Modal visible={modalVisible} animationType="slide" transparent={true}>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
+          <ImageManager />
           <Image
             style={styles.image}
             source={require("../assets/lab2.png")}
