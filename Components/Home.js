@@ -17,13 +17,13 @@ import { useState, useEffect } from "react";
 import GoalItem from "./GoalItem";
 import PressableButton from "./PressableButton";
 // import { app } from "../Firebase/firebaseSetup";
-import { database } from "../Firebase/firebaseSetup";
+import { auth, database } from "../Firebase/firebaseSetup";
 import {
   writeToDB,
   deleteFromDB,
   deleteAllFromDB,
 } from "../Firebase/firestoreHelper";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 
 export default function Home({ navigation, route }) {
   // console.log(database);
@@ -35,27 +35,37 @@ export default function Home({ navigation, route }) {
   const appName = "My awesome app";
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(database, "goals"), (querySnapShot) => {
-      let newArray = [];
-      if (!querySnapShot.empty) {
-        querySnapShot.forEach((docSnapshot) => {
-          // Retrieve and store Document's ID
-          newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
-        });
+    const unsubscribe = onSnapshot(
+      query(
+        collection(database, "goals"),
+        where("owner", "==", auth.currentUser.uid)
+      ),
+      (querySnapShot) => {
+        let newArray = [];
+        if (!querySnapShot.empty) {
+          querySnapShot.forEach((docSnapshot) => {
+            // Retrieve and store Document's ID
+            newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
+          });
+        }
+        // console.log("newArray ", newArray);
+        setGoals(newArray);
       }
-      // console.log("newArray ", newArray);
-      setGoals(newArray);
-    });
+    );
+    (error) => {
+      console.log("onSnap", error);
+      Alert.alert(error.message);
+    };
     // detach the listerner
-    return() => {
+    return () => {
       unsubscribe();
-    }
+    };
   }, []);
 
   function handleInputData(data) {
     console.log("App.js ", data);
 
-    let newGoal = { text: data };
+    let newGoal = { text: data, owner: auth.currentUser.uid };
     // setGoals((prevGoals) => {
     //   return [...prevGoals, newGoal];
     // });
