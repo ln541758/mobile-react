@@ -24,6 +24,7 @@ import {
   deleteAllFromDB,
 } from "../Firebase/firestoreHelper";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { uploadBytesResumable } from "firebase/storage";
 
 export default function Home({ navigation, route }) {
   // console.log(database);
@@ -77,6 +78,27 @@ export default function Home({ navigation, route }) {
     setModalVisible(false);
   }
 
+  async function handleImageData(url) {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`fetch error happened with status: ${response.status}`);
+      }
+      const blob = await response.blob();
+      const imageName = uri.substring(uri.lastIndexOf("/") + 1);
+      const imageRef = await ref(storage, `images/${imageName}`);
+      const uploadResult = await uploadBytesResumable(imageRef, blob);
+      console.log("upload result", uploadResult);
+    } catch (err) {
+      console.log("handle image data", err);
+    }
+  }
+
+  function handleInputData(data) {
+    if (data.imageurl) {
+      handleImageData(data.imageurl);
+    }
+  }
   function isModalVisible() {
     setModalVisible(true);
   }
