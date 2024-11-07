@@ -65,7 +65,8 @@ export default function Home({ navigation, route }) {
   function handleInputData(data) {
     console.log("App.js ", data);
 
-    let newGoal = { text: data, owner: auth.currentUser.uid };
+    let newGoal = { text: data.text };
+    newGoal = { ...newGoal, owner: auth.currentUser.uid };
     // setGoals((prevGoals) => {
     //   return [...prevGoals, newGoal];
     // });

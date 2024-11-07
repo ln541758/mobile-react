@@ -23,6 +23,7 @@ export default function Input({
   const [showCount, setShowCount] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
   const inputRef = useRef(null);
+  const [imageurl, setImageUrl] = useState("");
 
   useEffect(() => {
     if (autoFocus && inputRef.current) {
@@ -38,9 +39,13 @@ export default function Input({
     }
   });
 
+  function imageUriHandler(uri) {
+    setImageUrl(uri);
+}
+
   function handleConfirm() {
     // console.log(text);
-    inputHandler(text);
+    inputHandler({text, imageurl});
     setText("");
   }
 
@@ -76,7 +81,6 @@ export default function Input({
     <Modal visible={modalVisible} animationType="slide" transparent={true}>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <ImageManager />
           <Image
             style={styles.image}
             source={require("../assets/lab2.png")}
@@ -117,6 +121,7 @@ export default function Input({
               title="Confirm"
             />
           </View>
+          <ImageManager imageUriHandler={imageUriHandler}/>
         </View>
       </View>
     </Modal>
