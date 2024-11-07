@@ -6,7 +6,7 @@ import {
   getDocs,
   updateDoc,
 } from "firebase/firestore";
-import { database } from "./firebaseSetup";
+import { database, auth } from "./firebaseSetup";
 
 export async function writeToDB(collectionName, data) {
   try {
