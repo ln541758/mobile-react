@@ -66,6 +66,10 @@ export default function Home({ navigation, route }) {
   function handleInputData(data) {
     console.log("App.js ", data);
 
+    if (data.imageurl) {
+      handleImageData(data.imageurl);
+    }
+
     let newGoal = { text: data.text };
     newGoal = { ...newGoal, owner: auth.currentUser.uid };
     // setGoals((prevGoals) => {
@@ -94,11 +98,6 @@ export default function Home({ navigation, route }) {
     }
   }
 
-  function handleInputData(data) {
-    if (data.imageurl) {
-      handleImageData(data.imageurl);
-    }
-  }
   function isModalVisible() {
     setModalVisible(true);
   }
