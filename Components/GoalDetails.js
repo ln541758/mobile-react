@@ -33,6 +33,7 @@ export default function GoalDetails({ navigation, route }) {
       ),
     });
   }, [navigation, handleWarning]);
+  
 
   function moreDetailsHandler() {
     navigation.push("Details");

@@ -4,7 +4,7 @@ import * as ImagePicker from "expo-image-picker";
 
 export default function ImageManager({ imageUriHandler }) {
   const [response, requestPermission] = ImagePicker.useCameraPermissions();
-  const [imageurl, setImageUrl] = useState("");
+  const [imageuri, setImageUri] = useState("");
   // console.log(response);
   async function verifyPermissions() {
     try {
@@ -32,7 +32,7 @@ export default function ImageManager({ imageUriHandler }) {
       });
       if (!result.canceled) {
         console.log(result.assets[0].uri);
-        setImageUrl(result.assets[0].uri);
+        setImageUri(result.assets[0].uri);
         imageUriHandler(result.assets[0].uri);
       }
     } catch (err) {
@@ -43,10 +43,10 @@ export default function ImageManager({ imageUriHandler }) {
   return (
     <View>
       <Button title="Take an image" onPress={takeImageHandler} />
-      {imageurl && (
+      {imageuri && (
         <Image
           source={{
-            uri: imageurl,
+            uri: imageuri,
           }}
           style={styles.image}
         />

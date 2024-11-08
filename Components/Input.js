@@ -23,7 +23,7 @@ export default function Input({
   const [showCount, setShowCount] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
   const inputRef = useRef(null);
-  const [imageurl, setImageUrl] = useState("");
+  const [imageuri, setImageUri] = useState("");
 
   useEffect(() => {
     if (autoFocus && inputRef.current) {
@@ -40,12 +40,12 @@ export default function Input({
   });
 
   function imageUriHandler(uri) {
-    setImageUrl(uri);
+    setImageUri(uri);
 }
 
   function handleConfirm() {
     // console.log(text);
-    inputHandler({text, imageurl});
+    inputHandler({text, imageuri});
     setText("");
   }
 

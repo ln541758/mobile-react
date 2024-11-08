@@ -17,14 +17,14 @@ import { useState, useEffect } from "react";
 import GoalItem from "./GoalItem";
 import PressableButton from "./PressableButton";
 // import { app } from "../Firebase/firebaseSetup";
-import { auth, database } from "../Firebase/firebaseSetup";
+import { auth, database, storage } from "../Firebase/firebaseSetup";
 import {
   writeToDB,
   deleteFromDB,
   deleteAllFromDB,
 } from "../Firebase/firestoreHelper";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
-import { uploadBytesResumable } from "firebase/storage";
+import { ref, uploadBytesResumable } from "firebase/storage";
 
 export default function Home({ navigation, route }) {
   // console.log(database);
@@ -66,8 +66,8 @@ export default function Home({ navigation, route }) {
   function handleInputData(data) {
     console.log("App.js ", data);
 
-    if (data.imageurl) {
-      handleImageData(data.imageurl);
+    if (data.imageuri) {
+      handleImageData(data.imageuri);
     }
 
     let newGoal = { text: data.text };
@@ -82,9 +82,9 @@ export default function Home({ navigation, route }) {
     setModalVisible(false);
   }
 
-  async function handleImageData(url) {
+  async function handleImageData(uri) {
     try {
-      const response = await fetch(url);
+      const response = await fetch(uri);
       if (!response.ok) {
         throw new Error(`fetch error happened with status: ${response.status}`);
       }
@@ -92,7 +92,8 @@ export default function Home({ navigation, route }) {
       const imageName = uri.substring(uri.lastIndexOf("/") + 1);
       const imageRef = ref(storage, `images/${imageName}`);
       const uploadResult = await uploadBytesResumable(imageRef, blob);
-      console.log("upload result", uploadResult);
+      // console.log("upload result", uploadResult);
+      return uploadResult.metadata.fullPath;
     } catch (err) {
       console.log("handle image data", err);
     }
