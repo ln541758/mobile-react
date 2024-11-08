@@ -29,7 +29,6 @@ import { ref, uploadBytesResumable } from "firebase/storage";
 export default function Home({ navigation, route }) {
   // console.log(database);
 
-  const [receivedData, setReceivedData] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
 
@@ -63,22 +62,20 @@ export default function Home({ navigation, route }) {
     };
   }, []);
 
-  function handleInputData(data) {
+  async function handleInputData(data) {
     console.log("App.js ", data);
-
-    if (data.imageuri) {
-      handleImageData(data.imageuri);
+    let imageUri = "";
+    if (data.imageUri) {
+      console.log("data.imageUri", data.imageUri);
+      imageUri = await handleImageData(data.imageUri);
     }
-
-    let newGoal = { text: data.text };
-    newGoal = { ...newGoal, owner: auth.currentUser.uid };
+    console.log("imageUri", imageUri);
+    let newGoal = { text: data.text,  owner: auth.currentUser.uid, imageUri: imageUri };
     // setGoals((prevGoals) => {
     //   return [...prevGoals, newGoal];
     // });
 
     writeToDB("goals", newGoal);
-
-    setReceivedData(data);
     setModalVisible(false);
   }
 
@@ -92,7 +89,7 @@ export default function Home({ navigation, route }) {
       const imageName = uri.substring(uri.lastIndexOf("/") + 1);
       const imageRef = ref(storage, `images/${imageName}`);
       const uploadResult = await uploadBytesResumable(imageRef, blob);
-      // console.log("upload result", uploadResult);
+      console.log("upload result", uploadResult);
       return uploadResult.metadata.fullPath;
     } catch (err) {
       console.log("handle image data", err);

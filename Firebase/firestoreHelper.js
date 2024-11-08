@@ -10,7 +10,6 @@ import { database, auth } from "./firebaseSetup";
 
 export async function writeToDB(collectionName, data) {
   try {
-    data = { ...data, owner: auth.currentUser.uid };
     await addDoc(collection(database, collectionName), data);
     // console.log("Document written with ID: ", docRef.id);
     // console.log(docRef);
