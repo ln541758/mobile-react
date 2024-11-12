@@ -70,7 +70,11 @@ export default function Home({ navigation, route }) {
       imageUri = await handleImageData(data.imageUri);
     }
     console.log("imageUri", imageUri);
-    let newGoal = { text: data.text,  owner: auth.currentUser.uid, imageUri: imageUri };
+    let newGoal = { text: data.text };
+    newGoal = { ...newGoal, owner: auth.currentUser.uid };
+    if (imageUri) {
+      newGoal = { ...newGoal, imageUri: imageUri };
+    }
     // setGoals((prevGoals) => {
     //   return [...prevGoals, newGoal];
     // });
