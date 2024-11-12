@@ -1,11 +1,16 @@
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View, Image } from "react-native";
 import React, { useState } from "react";
 import * as Location from "expo-location";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { Dimensions } from "react-native";
 
 export default function LocationManager() {
   const [response, requestPermission] = Location.useForegroundPermissions();
   const [location, setLocation] = useState("");
+  const navigation = useNavigation();
+  
 
+  const windowWidth = Dimensions.get("window").width;
 
   async function verifyPermissions() {
     try {
@@ -29,17 +34,39 @@ export default function LocationManager() {
         Alert.alert("You need to give location permission");
         return;
       }
-      const response= await Location.getCurrentPositionAsync();
+      const response = await Location.getCurrentPositionAsync();
       // console.log(response);
-      setLocation({latitute: response.coords.latitude, longitude: response.coords.longitude});
+      setLocation({
+        latitude: response.coords.latitude,
+        longitude: response.coords.longitude,
+      });
+      console.log(location);
     } catch (err) {
       console.log("location user", err);
     }
   }
+  //   if (location)
+  //     console.log(
+  //       `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude}&zoom=14&size=400x200&maptype=roadmap&markers=color:red%7Clabel:L%7C${location.latitude},${location.longitude}&key=${process.env.EXPO_PUBLIC_mapsApiKey}`
+  //     );
 
   return (
     <View>
       <Button title="Get My Location" onPress={locateUserHandler} />
+      <Button
+        title="Let me choose on map"
+        onPress={() => {
+          navigation.navigate("Map");
+        }}
+      />
+      {location && (
+        <Image
+          source={{
+            uri: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude}&zoom=14&size=400x200&maptype=roadmap&markers=color:red%7Clabel:L%7C${location.latitude},${location.longitude}&key=${process.env.EXPO_PUBLIC_mapsApiKey}`,
+          }}
+          style={{ width: windowWidth, height: 200}}
+        />
+      )}
     </View>
   );
 }
