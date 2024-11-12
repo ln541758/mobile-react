@@ -17,53 +17,83 @@ import { useState, useEffect } from "react";
 import GoalItem from "./GoalItem";
 import PressableButton from "./PressableButton";
 // import { app } from "../Firebase/firebaseSetup";
-import { database } from "../Firebase/firebaseSetup";
+import { auth, database, storage } from "../Firebase/firebaseSetup";
 import {
   writeToDB,
   deleteFromDB,
   deleteAllFromDB,
 } from "../Firebase/firestoreHelper";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { ref, uploadBytesResumable } from "firebase/storage";
 
 export default function Home({ navigation, route }) {
   // console.log(database);
 
-  const [receivedData, setReceivedData] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
 
   const appName = "My awesome app";
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(database, "goals"), (querySnapShot) => {
-      let newArray = [];
-      if (!querySnapShot.empty) {
-        querySnapShot.forEach((docSnapshot) => {
-          // Retrieve and store Document's ID
-          newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
-        });
+    const unsubscribe = onSnapshot(
+      query(
+        collection(database, "goals"),
+        where("owner", "==", auth.currentUser.uid)
+      ),
+      (querySnapShot) => {
+        let newArray = [];
+        if (!querySnapShot.empty) {
+          querySnapShot.forEach((docSnapshot) => {
+            // Retrieve and store Document's ID
+            newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
+          });
+        }
+        // console.log("newArray ", newArray);
+        setGoals(newArray);
       }
-      // console.log("newArray ", newArray);
-      setGoals(newArray);
-    });
+    );
+    (error) => {
+      console.log("onSnap", error);
+      Alert.alert(error.message);
+    };
     // detach the listerner
-    return() => {
+    return () => {
       unsubscribe();
-    }
+    };
   }, []);
 
-  function handleInputData(data) {
+  async function handleInputData(data) {
     console.log("App.js ", data);
-
-    let newGoal = { text: data };
+    let imageUri = "";
+    if (data.imageUri) {
+      console.log("data.imageUri", data.imageUri);
+      imageUri = await handleImageData(data.imageUri);
+    }
+    console.log("imageUri", imageUri);
+    let newGoal = { text: data.text,  owner: auth.currentUser.uid, imageUri: imageUri };
     // setGoals((prevGoals) => {
     //   return [...prevGoals, newGoal];
     // });
 
     writeToDB("goals", newGoal);
-
-    setReceivedData(data);
     setModalVisible(false);
+  }
+
+  async function handleImageData(uri) {
+    try {
+      const response = await fetch(uri);
+      if (!response.ok) {
+        throw new Error(`fetch error happened with status: ${response.status}`);
+      }
+      const blob = await response.blob();
+      const imageName = uri.substring(uri.lastIndexOf("/") + 1);
+      const imageRef = ref(storage, `images/${imageName}`);
+      const uploadResult = await uploadBytesResumable(imageRef, blob);
+      console.log("upload result", uploadResult);
+      return uploadResult.metadata.fullPath;
+    } catch (err) {
+      console.log("handle image data", err);
+    }
   }
 
   function isModalVisible() {

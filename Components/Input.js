@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import React from "react";
 import { useState, useEffect, useRef } from "react";
+import ImageManager from "./ImageManager";
 
 export default function Input({
   autoFocus,
@@ -22,6 +23,7 @@ export default function Input({
   const [showCount, setShowCount] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
   const inputRef = useRef(null);
+  const [imageUri, setImageUri] = useState("");
 
   useEffect(() => {
     if (autoFocus && inputRef.current) {
@@ -37,9 +39,13 @@ export default function Input({
     }
   });
 
+  function imageUriHandler(uri) {
+    setImageUri(uri);
+}
+
   function handleConfirm() {
     // console.log(text);
-    inputHandler(text);
+    inputHandler({text, imageUri});
     setText("");
   }
 
@@ -115,6 +121,7 @@ export default function Input({
               title="Confirm"
             />
           </View>
+          <ImageManager imageUriHandler={imageUriHandler}/>
         </View>
       </View>
     </Modal>
