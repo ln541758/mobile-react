@@ -5,6 +5,7 @@ import {
   doc,
   getDocs,
   updateDoc,
+  setDoc,
 } from "firebase/firestore";
 import { database, auth } from "./firebaseSetup";
 

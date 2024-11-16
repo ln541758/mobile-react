@@ -16,9 +16,10 @@ export default function LocationManager() {
 
   useEffect(() => {
     if (route.params) {
+      console.log("route.params.selectedLocation", route.params.selectedLocation);
       setLocation(route.params.selectedLocation);
     }
-  }, [route.params]);
+  }, [route]);
 
   async function verifyPermissions() {
     try {
@@ -59,6 +60,7 @@ export default function LocationManager() {
   //     );
 
   function saveUseLocation() {
+    // console.log("saveUseLocation", location);
     writeWithIdToDB({ location }, "users", auth.currentUser.uid);
     navigation.navigate("Home");
   }

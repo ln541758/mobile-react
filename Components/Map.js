@@ -3,7 +3,7 @@ import { Button, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { useState } from "react";
 
-export default function Map() {
+export default function Map({ navigation }) {
   const [selectedLocation, setSelectedLocation] = useState();
   return (
     <>
