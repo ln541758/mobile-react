@@ -1,5 +1,5 @@
 import { Button, StyleSheet, Text, View, Image } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as Location from "expo-location";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Dimensions } from "react-native";
@@ -8,9 +8,15 @@ export default function LocationManager() {
   const [response, requestPermission] = Location.useForegroundPermissions();
   const [location, setLocation] = useState("");
   const navigation = useNavigation();
+  const route = useRoute();
   
-
   const windowWidth = Dimensions.get("window").width;
+
+  useEffect(() => {
+    if (route.params) {
+      setLocation(route.params.selectedLocation);
+    }
+  }, [route.params]);
 
   async function verifyPermissions() {
     try {
