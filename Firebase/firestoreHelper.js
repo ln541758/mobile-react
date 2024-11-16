@@ -6,6 +6,7 @@ import {
   getDocs,
   updateDoc,
   setDoc,
+  getDoc,
 } from "firebase/firestore";
 import { database, auth } from "./firebaseSetup";
 
@@ -24,6 +25,17 @@ export async function writeWithIdToDB(data, collectionName, id) {
     await setDoc(doc(database, collectionName, id), data, { merge: true });
   } catch (err) {
     console.error("write to db ", err);
+  }
+}
+
+export async function getFromDB(collectionName, id) {
+  try {
+    const docSnapShot = await getDoc(doc(database, collectionName, id));
+    if (docSnapShot.exists()) {
+      return docSnapShot.data();
+    }
+  } catch (err) {
+    console.error("get from db ", err);
   }
 }
 

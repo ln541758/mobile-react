@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import * as Location from "expo-location";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Dimensions } from "react-native";
-import { writeWithIdToDB } from "../Firebase/firestoreHelper";
+import { getFromDB, writeWithIdToDB } from "../Firebase/firestoreHelper";
 import { auth } from "../Firebase/firebaseSetup";
 
 export default function LocationManager() {
@@ -16,10 +16,23 @@ export default function LocationManager() {
 
   useEffect(() => {
     if (route.params) {
-      console.log("route.params.selectedLocation", route.params.selectedLocation);
+      console.log(
+        "route.params.selectedLocation",
+        route.params.selectedLocation
+      );
       setLocation(route.params.selectedLocation);
     }
   }, [route]);
+
+  useEffect(() => {
+    async function getUserData() {
+      const userData = getFromDB("users", auth.currentUser.uid);
+      if (userData) {
+        setLocation(userData.location);
+      }
+    }
+    getUserData();
+  }, []);
 
   async function verifyPermissions() {
     try {
