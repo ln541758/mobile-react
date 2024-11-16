@@ -10,6 +10,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "./Firebase/firebaseSetup";
+import Map from "./Components/Map";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -89,6 +90,7 @@ export default function App() {
           ),
         })}
       />
+      <Stack.Screen name="Map" component={Map} />
     </>
   );
 

@@ -18,6 +18,7 @@ const firebaseConfig = {
   messagingSenderId: process.env.EXPO_PUBLIC_messagingSenderId,
   appId: process.env.EXPO_PUBLIC_appId,
   storageBucket: process.env.EXPO_PUBLIC_storageBucket,
+  mapsApiKey: process.env.EXPO_PUBLIC_mapsApiKey,
 };
 
 // Initialize Firebase
