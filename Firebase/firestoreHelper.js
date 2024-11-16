@@ -18,6 +18,14 @@ export async function writeToDB(collectionName, data) {
   }
 }
 
+export async function writeWithIdToDB(data, collectionName, id) {
+  try {
+    await setDoc(doc(database, collectionName, id), data, { merge: true });
+  } catch (err) {
+    console.error("write to db ", err);
+  }
+}
+
 export async function deleteFromDB(deletedID, collectionName) {
   console.log("deleteFromDB ", deletedID, collectionName);
   try {
