@@ -27,7 +27,7 @@ export default function LocationManager() {
   useEffect(() => {
     async function getUserData() {
       const userData = await getFromDB("users", auth.currentUser.uid);
-      if (userData) {
+      if (userData && userData.location) {
         console.log("userData from Firebase", userData.location);
         setLocation(userData.location);
       }

@@ -1,0 +1,49 @@
+import { View, Text, Button, Alert } from "react-native";
+import React from "react";
+import * as Notifications from "expo-notifications";
+
+export default function NotificationManager() {
+  async function verifyPermissions() {
+    try {
+      const permissionResponse = await Notifications.getPermissionsAsync();
+      // console.log(permissionResponse);
+      if (permissionResponse.status === "granted") {
+        return true;
+      }
+      const requestPermission = await Notifications.requestPermissionsAsync();
+      return requestPermission.granted;
+    } catch (err) {
+      console.log("verify permission", err);
+    }
+  }
+
+  async function scheduleNotificationHandler() {
+    try {
+      const hasPermission = verifyPermissions();
+      if (!hasPermission) {
+        Alert.alert("You need to give notification permission");
+        return;
+      }
+      const id = await Notifications.scheduleNotificationAsync({
+        content: {
+          title: "First Notification",
+          body: "This is my first notification",
+        },
+        trigger: {
+          seconds: 3,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  return (
+    <View>
+      <Button
+        title="Schedule a Notifictation"
+        onPress={scheduleNotificationHandler}
+      />
+    </View>
+  );
+}
