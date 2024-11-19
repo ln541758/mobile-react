@@ -11,8 +11,15 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "./Firebase/firebaseSetup";
 import Map from "./Components/Map";
+import * as Notifications from "expo-notifications";
 
 export default function App() {
+  Notifications.setNotificationHandler({
+    handleNotification: async () => {
+      return { shouldShowAlert: true };
+    },
+  });
+
   const Stack = createNativeStackNavigator();
 
   const AuthStack = (

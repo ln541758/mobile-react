@@ -6,25 +6,26 @@ export default function NotificationManager() {
   async function verifyPermissions() {
     try {
       const permissionResponse = await Notifications.getPermissionsAsync();
-      // console.log(permissionResponse);
+      console.log(permissionResponse);
       if (permissionResponse.status === "granted") {
         return true;
       }
       const requestPermission = await Notifications.requestPermissionsAsync();
-      return requestPermission.granted;
+      return requestPermission.status === "granted";
     } catch (err) {
       console.log("verify permission", err);
+      return false;
     }
   }
 
   async function scheduleNotificationHandler() {
     try {
-      const hasPermission = verifyPermissions();
+      const hasPermission = await verifyPermissions();
       if (!hasPermission) {
         Alert.alert("You need to give notification permission");
         return;
       }
-      const id = await Notifications.scheduleNotificationAsync({
+      await Notifications.scheduleNotificationAsync({
         content: {
           title: "First Notification",
           body: "This is my first notification",
@@ -41,7 +42,7 @@ export default function NotificationManager() {
   return (
     <View>
       <Button
-        title="Schedule a Notifictation"
+        title="Schedule a Notification"
         onPress={scheduleNotificationHandler}
       />
     </View>
