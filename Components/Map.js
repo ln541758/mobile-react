@@ -22,7 +22,9 @@ export default function Map({ navigation }) {
         }}
         style={styles.map}
       >
-        <Marker title="Picked Location" coordinate={selectedLocation} />
+        {selectedLocation && (
+          <Marker title="Picked Location" coordinate={selectedLocation} />
+        )}
       </MapView>
       <Button
         title="Confirm Selected Location"

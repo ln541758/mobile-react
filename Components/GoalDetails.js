@@ -27,10 +27,12 @@ export default function GoalDetails({ navigation, route }) {
     async function fetchImageUrl() {
       if (route.params.goalData.imageUri) {
         try {
-          const reference = ref(storage, route.params.goalData.imageUri);
-          const uri = await getDownloadURL(reference);
-          console.log("Image URL:", uri);
-          setImageUri(uri);
+          if (route.params) {
+            const reference = ref(storage, route.params.goalData.imageUri);
+            const uri = await getDownloadURL(reference);
+            console.log("Image URL:", uri);
+            setImageUri(uri);
+          }
         } catch (error) {
           console.error("Error fetching image URL:", error);
         }
@@ -65,9 +67,15 @@ export default function GoalDetails({ navigation, route }) {
             This is details of a goal with text {route.params.goalData.text} and
             id {route.params.goalData.id}
           </Text>
-          <Button title="More Details" onPress={moreDetailsHandler} />
+          {route.params && (
+            <Button title="More Details" onPress={moreDetailsHandler} />
+          )}
           {imageUri && (
-            <Image source={{ uri: imageUri }} style={styles.image} alt="Image of the goal"/>
+            <Image
+              source={{ uri: imageUri }}
+              style={styles.image}
+              alt="Image of the goal"
+            />
           )}
           <GoalUsers goalId={route.params?.goalData?.id} />
         </>
