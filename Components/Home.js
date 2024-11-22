@@ -5,11 +5,8 @@ import {
   View,
   Button,
   SafeAreaView,
-  ScrollView,
   FlatList,
   Alert,
-  Pressable,
-  unstable_batchedUpdates,
 } from "react-native";
 import Header from "./Header";
 import Input from "./Input";
@@ -25,14 +22,45 @@ import {
 } from "../Firebase/firestoreHelper";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { ref, uploadBytesResumable } from "firebase/storage";
+import * as Notifications from "expo-notifications";
+import { verifyPermissions } from "./NotificationManager";
 
 export default function Home({ navigation, route }) {
   // console.log(database);
-
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
 
   const appName = "My awesome app";
+
+  useEffect(() => {
+    console.log("Home useEffect");
+    async function getPushTocken() {
+      const hasPermission = verifyPermissions();
+
+      if (!hasPermission) {
+        console.log("Push notification permissions denied.");
+        return;
+      }
+
+      if (Platform.OS === "android") {
+        await Notifications.setNotificationChannelAsync("default", {
+          name: "default",
+          importance: Notifications.AndroidImportance.MAX,
+        });
+      }
+
+      try {
+        const pushToken = await Notifications.getExpoPushTokenAsync({
+          projectId: Constants.expoConfig.extra.eas.projectId,
+        });
+
+        console.log("pushToken", pushToken);
+      } catch (err) {
+        console.log("Failed to get push token", err);
+      }
+    }
+    getPushTocken();
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -151,6 +179,20 @@ export default function Home({ navigation, route }) {
     );
   }
 
+  function pushNotificationHandler() {
+    fetch("https://exp.host/--/api/v2/push/send", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        to: "ExponentPushToken[Rw12ozFFHe1kgT4ftgNzn7]",
+        title: "Push Notification",
+        body: "This is a push notification",
+      })
+    });
+  }
+
   // function handleGoalPress(pressGoal) {
   //   // console.log(pressGoal);
   //   navigation.navigate("Details", { goalData: pressGoal });
@@ -171,6 +213,8 @@ export default function Home({ navigation, route }) {
         >
           <Text style={styles.buttonText}>Add a goal</Text>
         </PressableButton>
+
+        <Button title="Test for Push Notification" onPress={pushNotificationHandler} />
 
         {/* <Button title="Add a Goal" onPress={isModalVisible} /> */}
         <Input
