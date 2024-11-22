@@ -25,14 +25,29 @@ import {
 } from "../Firebase/firestoreHelper";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { ref, uploadBytesResumable } from "firebase/storage";
+import * as Notifications from "expo-notifications";
+import { verifyPermissions } from "./NotificationManager";
 
 export default function Home({ navigation, route }) {
   // console.log(database);
-
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
 
   const appName = "My awesome app";
+
+  useEffect(() => {
+    console.log("Home useEffect");
+    async function getPushTocken() {
+      const hasPermission = verifyPermissions();
+      if(hasPermission){
+      const pushToken = await Notifications.getExpoPushTokenAsync(
+        {projectId: "8db3d3e5-f7b0-456c-a790-763cf145fc3c"}
+      );
+      console.log("pushToken", pushToken);
+    }
+    }
+    getPushTocken();
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(

@@ -13,12 +13,14 @@ import { auth } from "./Firebase/firebaseSetup";
 import Map from "./Components/Map";
 import * as Notifications from "expo-notifications";
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => {
+    return { shouldShowAlert: true };
+  },
+});
+
 export default function App() {
-  Notifications.setNotificationHandler({
-    handleNotification: async () => {
-      return { shouldShowAlert: true };
-    },
-  });
+
 
   const Stack = createNativeStackNavigator();
 
@@ -112,6 +114,17 @@ export default function App() {
       }
     });
     return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    const subscription = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        console.log(notification);
+      }
+    );
+    return () => {
+      subscription.remove();
+    };
   }, []);
 
   return (
