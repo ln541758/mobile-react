@@ -5,11 +5,8 @@ import {
   View,
   Button,
   SafeAreaView,
-  ScrollView,
   FlatList,
   Alert,
-  Pressable,
-  unstable_batchedUpdates,
 } from "react-native";
 import Header from "./Header";
 import Input from "./Input";
@@ -39,12 +36,28 @@ export default function Home({ navigation, route }) {
     console.log("Home useEffect");
     async function getPushTocken() {
       const hasPermission = verifyPermissions();
-      if(hasPermission){
-      const pushToken = await Notifications.getExpoPushTokenAsync(
-        {projectId: "8db3d3e5-f7b0-456c-a790-763cf145fc3c"}
-      );
-      console.log("pushToken", pushToken);
-    }
+
+      if (!hasPermission) {
+        console.log("Push notification permissions denied.");
+        return;
+      }
+
+      if (Platform.OS === "android") {
+        await Notifications.setNotificationChannelAsync("default", {
+          name: "default",
+          importance: Notifications.AndroidImportance.MAX,
+        });
+      }
+
+      try {
+        const pushToken = await Notifications.getExpoPushTokenAsync({
+          projectId: Constants.expoConfig.extra.eas.projectId,
+        });
+
+        console.log("pushToken", pushToken);
+      } catch (err) {
+        console.log("Failed to get push token", err);
+      }
     }
     getPushTocken();
   }, []);
@@ -166,6 +179,20 @@ export default function Home({ navigation, route }) {
     );
   }
 
+  function pushNotificationHandler() {
+    fetch("https://exp.host/--/api/v2/push/send", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        to: "ExponentPushToken[Rw12ozFFHe1kgT4ftgNzn7]",
+        title: "Push Notification",
+        body: "This is a push notification",
+      })
+    });
+  }
+
   // function handleGoalPress(pressGoal) {
   //   // console.log(pressGoal);
   //   navigation.navigate("Details", { goalData: pressGoal });
@@ -186,6 +213,8 @@ export default function Home({ navigation, route }) {
         >
           <Text style={styles.buttonText}>Add a goal</Text>
         </PressableButton>
+
+        <Button title="Test for Push Notification" onPress={pushNotificationHandler} />
 
         {/* <Button title="Add a Goal" onPress={isModalVisible} /> */}
         <Input
